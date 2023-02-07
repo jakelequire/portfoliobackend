@@ -1,13 +1,19 @@
 const fs = require('fs').promises;
 const express = require('express');
-
 const router = express.Router();
+
+const getMetadataFromArticle = require('../components/getMetadataFromArticle');
+const getContentFromArticle = (article: string) => {
+    const content = article.split('---')[2];
+    return content;
+  };
+  
 const articlesDir = '../data/articles';
 
 router.get('/articles', async (req: any, res: any) => {
     const files = await fs.readdir(articlesDir);
     const articles = await Promise.all(
-      files.map(async file => {
+      files.map(async (file: string)=> {
         const article = await fs.readFile(`${articlesDir}/${file}`, 'utf-8');
         return {
           ...getMetadataFromArticle(article),
