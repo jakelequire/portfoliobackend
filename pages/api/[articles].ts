@@ -1,9 +1,9 @@
 const express = require('express');
-const app = express();
 const cors = require('cors');
-const port = 3001;
+const articles = require('../../routes/articles.ts');
 
-const postHandler = require('./components/postHandler');
+const app = express();
+const port = 3001;
 
 const corsOptions = {
     origin: 'http://localhost:3000',
@@ -14,13 +14,12 @@ const corsOptions = {
 };
 
 app.use(cors());
-
-app.get('/', (req: any, res: any) => {
-    res.send('Hello World!');
-    }
-);
+app.use('/articles', articles);
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
     }
 );
+
+
+export {}
