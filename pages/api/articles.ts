@@ -22,6 +22,7 @@ const getContentFromArticle = (article: string) => {
 const articlesDir = '../data/articles';
 
 router.get('/articles', async (req: any, res: any) => {
+    res.send('Hello World!')
     const files = await fs.readdir(articlesDir);
     const articles = await Promise.all(
       files.map(async (file: string)=> {

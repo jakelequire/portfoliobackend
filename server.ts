@@ -13,7 +13,7 @@ const corsOptions = {
     allowedHeaders: 'Content-Type, Authorization, Content-Length, X-Requested-With',
 };
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.get('/', (req: any, res: any) => {
     res.send('Hello World!');
@@ -24,3 +24,5 @@ app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
     }
 );
+
+export {};
