@@ -1,0 +1,10 @@
+{
+    "verbose": true,
+    "ignore": [
+        "node_modules",
+        "components",
+        ".next"
+    ],
+    "watch": ["server/**/*", "server.ts"],
+    "ext": "ts js json"
+}
