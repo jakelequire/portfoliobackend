@@ -1,53 +1,56 @@
 import fs from "fs";
+import { Request, Response } from "express";
 import matter from "gray-matter";
 import { Article } from "./TypeDefinition/TypeDefinitions";
 
 const articleDir = "../data/articles";
 
-const articleData: Article[] = [];
-
 async function articleQuery(): Promise<Article[]> {
-    const articles = await fs.promises.readdir(articleDir);
-    for (const article of articles) {
-        const file = await fs.promises.readFile(`${articleDir}/${article}`, "utf8");
-        const { data } = matter(file);
-        articleData.push({
-            title: data.title,
-            date: data.date,
-            content: data.content,
-            tags: data.tags,
-            category: data.category,
-            image: data.image,
-            imageAlt: data.imageAlt
-        });
-    }
-    return articleData;
+    const fileNames = await fs.promises.readdir(articleDir);
+    let articles = await Promise.all(
+        fileNames.map(async (fileName) => {
+            const file = await fs.promises.readFile(`${articleDir}/${fileName}`, "utf8");
+            const { data } = matter(file);
+            return<Article>{
+                title: data.title,
+                date: data.date,
+                content: data.content,
+                tags: data.tags,
+                category: data.category,
+                image: data.image,
+                imageAlt: data.imageAlt
+            };
+        })
+    );
+
+    return articles;
 }
 
-export default async function getArticles(r, s) {
-    if (!r.query.sort) {
+export default async function getArticles(r: Request, s: Response) {
+    if (!r.query || !r.query.sort) {
         s.json(await articleQuery());
         return;
     }
-    
-    await articleQuery();
+
+    const articles = await articleQuery();
+
     if (r.query.sort === "date") {
-        s.json(sortedByDate());
+        s.json(sortedByDate(articles));
     } else if (r.query.sort === "alphabetically") {
-        s.json(sortedAlphabetically());
+        s.json(sortedAlphabetically(articles));
     } else {
-        s.json(articleData);
+        s.json(articles);
     }
 }
 
-function sortedByDate(): Article[] {
-    return articleData.sort((a, b) => {
+function sortedByDate(articles: Article[]): Article[] {
+    return articles.sort((a, b) => {
         return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
 }
 
-function sortedAlphabetically(): Article[] {
-    return articleData.sort((a, b) => {
+function sortedAlphabetically(articles: Article[]): Article[] {
+    return articles.sort((a, b) => {
         return a.title.localeCompare(b.title);
     });
 }

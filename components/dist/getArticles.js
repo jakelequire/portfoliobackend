@@ -39,49 +39,49 @@ exports.__esModule = true;
 var fs_1 = require("fs");
 var gray_matter_1 = require("gray-matter");
 var articleDir = "../data/articles";
-var articleData = [];
 function articleQuery() {
     return __awaiter(this, void 0, Promise, function () {
-        var articles, _i, articles_1, article, file, data;
+        var fileNames, articles;
+        var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fs_1["default"].promises.readdir(articleDir)];
                 case 1:
-                    articles = _a.sent();
-                    _i = 0, articles_1 = articles;
-                    _a.label = 2;
+                    fileNames = _a.sent();
+                    return [4 /*yield*/, Promise.all(fileNames.map(function (fileName) { return __awaiter(_this, void 0, void 0, function () {
+                            var file, data;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0: return [4 /*yield*/, fs_1["default"].promises.readFile(articleDir + "/" + fileName, "utf8")];
+                                    case 1:
+                                        file = _a.sent();
+                                        data = gray_matter_1["default"](file).data;
+                                        return [2 /*return*/, {
+                                                title: data.title,
+                                                date: data.date,
+                                                content: data.content,
+                                                tags: data.tags,
+                                                category: data.category,
+                                                image: data.image,
+                                                imageAlt: data.imageAlt
+                                            }];
+                                }
+                            });
+                        }); }))];
                 case 2:
-                    if (!(_i < articles_1.length)) return [3 /*break*/, 5];
-                    article = articles_1[_i];
-                    return [4 /*yield*/, fs_1["default"].promises.readFile(articleDir + "/" + article, "utf8")];
-                case 3:
-                    file = _a.sent();
-                    data = gray_matter_1["default"](file).data;
-                    articleData.push({
-                        title: data.title,
-                        date: data.date,
-                        content: data.content,
-                        tags: data.tags,
-                        category: data.category,
-                        image: data.image,
-                        imageAlt: data.imageAlt
-                    });
-                    _a.label = 4;
-                case 4:
-                    _i++;
-                    return [3 /*break*/, 2];
-                case 5: return [2 /*return*/, articleData];
+                    articles = _a.sent();
+                    return [2 /*return*/, articles];
             }
         });
     });
 }
 function getArticles(r, s) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, _b;
+        var _a, _b, articles;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
-                    if (!!r.query.sort) return [3 /*break*/, 2];
+                    if (!(!r.query || !r.query.sort)) return [3 /*break*/, 2];
                     _b = (_a = s).json;
                     return [4 /*yield*/, articleQuery()];
                 case 1:
@@ -89,15 +89,15 @@ function getArticles(r, s) {
                     return [2 /*return*/];
                 case 2: return [4 /*yield*/, articleQuery()];
                 case 3:
-                    _c.sent();
+                    articles = _c.sent();
                     if (r.query.sort === "date") {
-                        s.json(sortedByDate());
+                        s.json(sortedByDate(articles));
                     }
                     else if (r.query.sort === "alphabetically") {
-                        s.json(sortedAlphabetically());
+                        s.json(sortedAlphabetically(articles));
                     }
                     else {
-                        s.json(articleData);
+                        s.json(articles);
                     }
                     return [2 /*return*/];
             }
@@ -105,13 +105,13 @@ function getArticles(r, s) {
     });
 }
 exports["default"] = getArticles;
-function sortedByDate() {
-    return articleData.sort(function (a, b) {
+function sortedByDate(articles) {
+    return articles.sort(function (a, b) {
         return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
 }
-function sortedAlphabetically() {
-    return articleData.sort(function (a, b) {
+function sortedAlphabetically(articles) {
+    return articles.sort(function (a, b) {
         return a.title.localeCompare(b.title);
     });
 }

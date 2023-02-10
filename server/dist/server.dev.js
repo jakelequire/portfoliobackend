@@ -6,6 +6,8 @@ var next = require('next');
 
 var cors = require('cors');
 
+var getArticles = require('../components/dist/getArticles.js');
+
 var dev = process.env.NODE_ENV !== 'production';
 var app = next({
   dev: dev
@@ -13,17 +15,20 @@ var app = next({
 var handle = app.getRequestHandler();
 var PORT = 3001;
 var corsOptions = {
-  origin: 'http://localhost:3000/testdev',
-  credentials: true
+  origin: ["http://localhost:3000/testdev", "http://localhost:3000"],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
-cors(corsOptions);
 app.prepare().then(function () {
   var server = express();
+  server.use(cors(corsOptions));
   server.get('/', function (req, res) {
     return handle(req, res);
   });
   server.get('/articles', function (req, res) {
-    res.send('Hello World!');
+    console.log("Hello! This is a test :)");
+    return getArticles(req, res);
   });
   server.listen(PORT, function (err) {
     if (err) throw err;

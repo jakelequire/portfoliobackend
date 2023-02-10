@@ -9,3 +9,11 @@ export type Article = {
     image: string;
     imageAlt: string;
 }
+export type GetArticle = (r: RequestParams, s: Response) => void;
+export type ArticleQuery = () => Promise<Article[]>;
+export type Response = { json: (data: Article[]) => void;}
+export type RequestParams = {
+    query: {
+        sort: string;
+    }
+}
