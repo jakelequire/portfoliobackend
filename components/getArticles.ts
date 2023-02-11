@@ -24,6 +24,18 @@ async function articleQuery(): Promise<Article[]> {
     return articleData;
 }
 
+function sortedByDate(): Article[] {
+    return articleData.sort((a, b) => {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+}
+
+function sortedAlphabetically(): Article[] {
+    return articleData.sort((a, b) => {
+        return a.title.localeCompare(b.title);
+    });
+}
+
 export default async function getArticles(r, s) {
     if (!r.query.sort) {
         s.json(await articleQuery());
@@ -37,16 +49,4 @@ export default async function getArticles(r, s) {
     } else {
         s.json(articleData);
     }
-}
-
-function sortedByDate(): Article[] {
-    return articleData.sort((a, b) => {
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-    });
-}
-
-function sortedAlphabetically(): Article[] {
-    return articleData.sort((a, b) => {
-        return a.title.localeCompare(b.title);
-    });
 }
