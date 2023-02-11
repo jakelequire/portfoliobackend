@@ -1,9 +1,9 @@
-import fs from "fs";
 import matter from "gray-matter";
 import { Article } from "./TypeDefinition/TypeDefinitions";
 import fsPromises from "fs/promises"
-var articleData: Article[] = [];
-const articleDir = "./articles";
+import * as path from "path";
+const articleData: Article[] = [];
+const articleDir = path.join(__dirname, '..', 'articles');
 
 async function articleQuery(): Promise<Article[]> {
     const articles = await fsPromises.readdir(articleDir);
@@ -49,3 +49,18 @@ export default async function getArticles(r, s) {
         s.json(articleData);
     }
 }
+
+
+
+/* 
+- /Components
+    - /articles
+        - article1.md
+        - article2.md
+        - article3.md
+    - /TypeDefinition
+        - TypeDefinitions.ts
+    - /dist
+        - getArticles.js
+    - getArticles.ts
+*/

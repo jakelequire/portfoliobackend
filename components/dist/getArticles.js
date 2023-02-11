@@ -38,8 +38,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var gray_matter_1 = require("gray-matter");
 var promises_1 = require("fs/promises");
+var path = require("path");
 var articleData = [];
-var articleDir = "./articles";
+var articleDir = path.join(__dirname, '..', 'articles');
 function articleQuery() {
     return __awaiter(this, void 0, Promise, function () {
         var articles, _i, articles_1, article, file, data;
@@ -115,3 +116,15 @@ function getArticles(r, s) {
     });
 }
 exports["default"] = getArticles;
+/*
+- /Components
+    - /articles
+        - article1.md
+        - article2.md
+        - article3.md
+    - /TypeDefinition
+        - TypeDefinitions.ts
+    - /dist
+        - getArticles.js
+    - getArticles.ts
+*/ 
