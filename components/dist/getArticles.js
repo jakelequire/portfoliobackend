@@ -36,18 +36,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var fs_1 = require("fs");
 var gray_matter_1 = require("gray-matter");
-require("fs/promises");
-var articleDir = "../data/articles";
+var promises_1 = require("fs/promises");
+var articleData = [];
+var articleDir = "./articles";
 function articleQuery() {
     return __awaiter(this, void 0, Promise, function () {
-        var articleData, articles, _i, articles_1, article, file, data;
+        var articles, _i, articles_1, article, file, data;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    articleData = [];
-                    return [4 /*yield*/, fs_1["default"].promises.readdir(articleDir)];
+                case 0: return [4 /*yield*/, promises_1["default"].readdir(articleDir)];
                 case 1:
                     articles = _a.sent();
                     _i = 0, articles_1 = articles;
@@ -55,7 +53,7 @@ function articleQuery() {
                 case 2:
                     if (!(_i < articles_1.length)) return [3 /*break*/, 5];
                     article = articles_1[_i];
-                    return [4 /*yield*/, fs_1["default"].promises.readFile(articleDir + "/" + article, "utf8")];
+                    return [4 /*yield*/, promises_1["default"].readFile(articleDir + "/" + article, "utf8")];
                 case 3:
                     file = _a.sent();
                     data = gray_matter_1["default"](file).data;
@@ -78,24 +76,21 @@ function articleQuery() {
     });
 }
 function sortedByDate() {
-    var articleData = [];
     return articleData.sort(function (a, b) {
         return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
 }
 function sortedAlphabetically() {
-    var articleData = [];
     return articleData.sort(function (a, b) {
         return a.title.localeCompare(b.title);
     });
 }
 function getArticles(r, s) {
     return __awaiter(this, void 0, void 0, function () {
-        var articleData, _a, _b;
+        var _a, _b;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
-                    articleData = [];
                     if (!!r.query.sort) return [3 /*break*/, 2];
                     _b = (_a = s).json;
                     return [4 /*yield*/, articleQuery()];
