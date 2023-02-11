@@ -1,14 +1,10 @@
 ---
-title: My Blog Post 2
-categories: ['category1', 'category2']
-tags: ['tag1', 'tag2', 'tag3']
-date: 01/08/2023
-author: Jake LeQuire
-image: /images/test.jpg
+title: "Test title 1"
+date: "2022-01-01"
+content: "Test content 1"
+tags: ["tag1", "tag2"]
+category: "Test category 1"
+image: "test.jpg"
+imageAlt: "test image alt 1"
 ---
-
-# This is a test markdown document
-This is the sub heading Hello hello
-
-## Test
-Test
+Test body 2

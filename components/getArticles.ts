@@ -1,12 +1,13 @@
 import fs from "fs";
 import matter from "gray-matter";
 import { Article } from "./TypeDefinition/TypeDefinitions";
-
+require("fs/promises")
 const articleDir = "../data/articles";
 
-const articleData: Article[] = [];
+
 
 async function articleQuery(): Promise<Article[]> {
+    const articleData: Article[] = [];
     const articles = await fs.promises.readdir(articleDir);
     for (const article of articles) {
         const file = await fs.promises.readFile(`${articleDir}/${article}`, "utf8");
@@ -25,18 +26,21 @@ async function articleQuery(): Promise<Article[]> {
 }
 
 function sortedByDate(): Article[] {
+    const articleData: Article[] = [];
     return articleData.sort((a, b) => {
         return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
 }
 
 function sortedAlphabetically(): Article[] {
+    const articleData: Article[] = [];
     return articleData.sort((a, b) => {
         return a.title.localeCompare(b.title);
     });
 }
 
 export default async function getArticles(r, s) {
+    const articleData: Article[] = [];
     if (!r.query.sort) {
         s.json(await articleQuery());
         return;

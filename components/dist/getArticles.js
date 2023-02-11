@@ -38,50 +38,65 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var fs_1 = require("fs");
 var gray_matter_1 = require("gray-matter");
+require("fs/promises");
 var articleDir = "../data/articles";
 function articleQuery() {
     return __awaiter(this, void 0, Promise, function () {
-        var fileNames, articles;
-        var _this = this;
+        var articleData, articles, _i, articles_1, article, file, data;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, fs_1["default"].promises.readdir(articleDir)];
+                case 0:
+                    articleData = [];
+                    return [4 /*yield*/, fs_1["default"].promises.readdir(articleDir)];
                 case 1:
-                    fileNames = _a.sent();
-                    return [4 /*yield*/, Promise.all(fileNames.map(function (fileName) { return __awaiter(_this, void 0, void 0, function () {
-                            var file, data;
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
-                                    case 0: return [4 /*yield*/, fs_1["default"].promises.readFile(articleDir + "/" + fileName, "utf8")];
-                                    case 1:
-                                        file = _a.sent();
-                                        data = gray_matter_1["default"](file).data;
-                                        return [2 /*return*/, {
-                                                title: data.title,
-                                                date: data.date,
-                                                content: data.content,
-                                                tags: data.tags,
-                                                category: data.category,
-                                                image: data.image,
-                                                imageAlt: data.imageAlt
-                                            }];
-                                }
-                            });
-                        }); }))];
-                case 2:
                     articles = _a.sent();
-                    return [2 /*return*/, articles];
+                    _i = 0, articles_1 = articles;
+                    _a.label = 2;
+                case 2:
+                    if (!(_i < articles_1.length)) return [3 /*break*/, 5];
+                    article = articles_1[_i];
+                    return [4 /*yield*/, fs_1["default"].promises.readFile(articleDir + "/" + article, "utf8")];
+                case 3:
+                    file = _a.sent();
+                    data = gray_matter_1["default"](file).data;
+                    articleData.push({
+                        title: data.title,
+                        date: data.date,
+                        content: data.content,
+                        tags: data.tags,
+                        category: data.category,
+                        image: data.image,
+                        imageAlt: data.imageAlt
+                    });
+                    _a.label = 4;
+                case 4:
+                    _i++;
+                    return [3 /*break*/, 2];
+                case 5: return [2 /*return*/, articleData];
             }
         });
     });
 }
+function sortedByDate() {
+    var articleData = [];
+    return articleData.sort(function (a, b) {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+}
+function sortedAlphabetically() {
+    var articleData = [];
+    return articleData.sort(function (a, b) {
+        return a.title.localeCompare(b.title);
+    });
+}
 function getArticles(r, s) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, _b, articles;
+        var articleData, _a, _b;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
-                    if (!(!r.query || !r.query.sort)) return [3 /*break*/, 2];
+                    articleData = [];
+                    if (!!r.query.sort) return [3 /*break*/, 2];
                     _b = (_a = s).json;
                     return [4 /*yield*/, articleQuery()];
                 case 1:
@@ -89,15 +104,15 @@ function getArticles(r, s) {
                     return [2 /*return*/];
                 case 2: return [4 /*yield*/, articleQuery()];
                 case 3:
-                    articles = _c.sent();
+                    _c.sent();
                     if (r.query.sort === "date") {
-                        s.json(sortedByDate(articles));
+                        s.json(sortedByDate());
                     }
                     else if (r.query.sort === "alphabetically") {
-                        s.json(sortedAlphabetically(articles));
+                        s.json(sortedAlphabetically());
                     }
                     else {
-                        s.json(articles);
+                        s.json(articleData);
                     }
                     return [2 /*return*/];
             }
@@ -105,13 +120,3 @@ function getArticles(r, s) {
     });
 }
 exports["default"] = getArticles;
-function sortedByDate(articles) {
-    return articles.sort(function (a, b) {
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-    });
-}
-function sortedAlphabetically(articles) {
-    return articles.sort(function (a, b) {
-        return a.title.localeCompare(b.title);
-    });
-}

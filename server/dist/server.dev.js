@@ -6,7 +6,7 @@ var next = require('next');
 
 var cors = require('cors');
 
-var getArticles = require('../components/dist/getArticles.js');
+var getArticles = require('../components/dist/getArticles')["default"];
 
 var dev = process.env.NODE_ENV !== 'production';
 var app = next({

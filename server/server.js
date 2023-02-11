@@ -16,11 +16,9 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
-
 app.prepare().then(() => {
   const server = express();
   server.use(cors(corsOptions));
-
   server.get('/', (req, res) => {
     return handle(req, res);
   });
