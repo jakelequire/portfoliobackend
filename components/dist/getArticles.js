@@ -39,21 +39,35 @@ exports.__esModule = true;
 var gray_matter_1 = require("gray-matter");
 var promises_1 = require("fs/promises");
 var path = require("path");
+var promises_2 = require("fs/promises");
 var articleData = [];
-var articleDir = path.join(__dirname, '..', 'articles');
+var articleDir = path.join(__dirname, '..', '../public/articles');
+console.log(articleDir);
+var fs = require('fs');
+if (fs.existsSync(articleDir)) {
+    console.log('The directory exists.');
+}
+else {
+    console.log('The directory does not exist.');
+}
 function articleQuery() {
     return __awaiter(this, void 0, Promise, function () {
-        var articles, _i, articles_1, article, file, data;
+        var articles, _i, articles_1, article, file, data, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, promises_1["default"].readdir(articleDir)];
+                case 0:
+                    _a.trys.push([0, 6, , 7]);
+                    console.log('reading directory', articleDir);
+                    return [4 /*yield*/, promises_2.readdir(articleDir)];
                 case 1:
                     articles = _a.sent();
+                    console.log('articles', articles);
                     _i = 0, articles_1 = articles;
                     _a.label = 2;
                 case 2:
                     if (!(_i < articles_1.length)) return [3 /*break*/, 5];
                     article = articles_1[_i];
+                    console.log('reading file', articleDir + "/" + article);
                     return [4 /*yield*/, promises_1["default"].readFile(articleDir + "/" + article, "utf8")];
                 case 3:
                     file = _a.sent();
@@ -71,7 +85,14 @@ function articleQuery() {
                 case 4:
                     _i++;
                     return [3 /*break*/, 2];
-                case 5: return [2 /*return*/, articleData];
+                case 5:
+                    console.log('articleData', articleData);
+                    return [2 /*return*/, articleData];
+                case 6:
+                    error_1 = _a.sent();
+                    console.error('Error in articleQuery', error_1);
+                    throw error_1;
+                case 7: return [2 /*return*/];
             }
         });
     });
@@ -117,14 +138,25 @@ function getArticles(r, s) {
 }
 exports["default"] = getArticles;
 /*
-- /Components
-    - /articles
-        - article1.md
-        - article2.md
-        - article3.md
-    - /TypeDefinition
-        - TypeDefinitions.ts
-    - /dist
-        - getArticles.js
-    - getArticles.ts
+- H:
+    - /portfoliobackend
+        - /portfoliobackend
+            - /Components
+                - /TypeDefinition
+                    - TypeDefinitions.ts
+                - /dist
+                    - getArticles.js
+                - getArticles.ts
+            - /public
+                - /articles
+                    - article1.md
+                    - article2.md
+                    - article3.md
+            - /pages
+                - /api
+            - /server
+                - /dist
+                    - server.js
+                - server.js
+                - server.dev.js
 */ 
