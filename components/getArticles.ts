@@ -82,7 +82,9 @@ async function articleQuery(): Promise<Article[]> {
                     - TypeDefinitions.ts
                 - /dist
                     - getArticles.js
+                    - _processMarkdown.js
                 - getArticles.ts
+                - _processMarkdown.ts
             - /public
                 - /articles
                     - article1.md

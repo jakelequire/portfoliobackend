@@ -155,7 +155,9 @@ exports["default"] = getArticles;
                     - TypeDefinitions.ts
                 - /dist
                     - getArticles.js
+                    - _processMarkdown.js
                 - getArticles.ts
+                - _processMarkdown.ts
             - /public
                 - /articles
                     - article1.md
