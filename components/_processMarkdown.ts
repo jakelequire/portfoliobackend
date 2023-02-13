@@ -12,16 +12,15 @@ const articleParse: Article[] = [];
  */
 export default async function processMarkdown() {
   await parseFiles();
-  let articleObject = {
-    title: articleParse[0].title,
-    date: articleParse[0].date,
-    content: articleParse[0].content,
-    tags: articleParse[0].tags,
-    category: articleParse[0].category,
-    image: articleParse[0].image,
-    imageAlt: articleParse[0].imageAlt,
-  }
-  return articleObject;
+  return articleParse.map(article => ({
+    title: article.title,
+    date: article.date,
+    content: article.content,
+    tags: article.tags,
+    category: article.category,
+    image: article.image,
+    imageAlt: article.imageAlt,
+  }));
 }
 console.log(processMarkdown());
 /**
@@ -56,6 +55,7 @@ async function parseFiles() {
       continue;
     }
     const metadataString = match[0].trim();
+    console.log(metadataString);
     const metadata = metadataString.split('\n').reduce((acc, line) => {
       const [key, value] = line.split(':');
       return {
@@ -63,6 +63,8 @@ async function parseFiles() {
         [key.trim()]: value.trim(),
       };
     }, {});
+    console.log("_processMarkdown {MetaData}: " + metadata)
+    debugger;
     const fileDataObject: Article = {
       title: metadata.title,
       date: metadata.date,
@@ -76,6 +78,7 @@ async function parseFiles() {
   }
   return parsedFiles;
 }
+parseFiles()
 
 /*
 Last left off:
