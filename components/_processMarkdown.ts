@@ -41,7 +41,7 @@ async function parseFiles() {
     const fileDataObject = {
       title: fileData[1].split('title: ')[1],
       date: fileData[1].split('date: ')[1],
-      tags: fileData[1].split('tags: ')[1],
+      tags: fileData[1].split('tags: ')[1].split(','),
       category: fileData[1].split('category: ')[1],
       image: fileData[1].split('image: ')[1],
       imageAlt: fileData[1].split('imageAlt: ')[1],
