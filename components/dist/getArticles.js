@@ -36,12 +36,30 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var unified = function () { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
+    switch (_a.label) {
+        case 0: return [4 /*yield*/, Promise.resolve().then(function () { return require('unified'); })];
+        case 1: return [2 /*return*/, _a.sent()];
+    }
+}); }); };
+var markdown = function () { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
+    switch (_a.label) {
+        case 0: return [4 /*yield*/, Promise.resolve().then(function () { return require('remark-parse'); })];
+        case 1: return [2 /*return*/, _a.sent()];
+    }
+}); }); };
+var frontmatter = function () { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
+    switch (_a.label) {
+        case 0: return [4 /*yield*/, Promise.resolve().then(function () { return require('remark-frontmatter'); })];
+        case 1: return [2 /*return*/, _a.sent()];
+    }
+}); }); };
 var promises_1 = require("fs/promises");
-var remark_1 = require("remark");
 var promises_2 = require("fs/promises");
 var path = require("path");
-var remark_frontmatter_1 = require("remark-frontmatter");
-var js_yaml_1 = require("js-yaml");
+var processor = unified()
+    .use(markdown)
+    .use(frontmatter);
 var articleData = [];
 var articleDir = path.join(__dirname, '..', '../public/articles');
 /* Testing to see if directory exists for articleDir */
@@ -55,71 +73,42 @@ else {
 /* ------------------------------------------------- */
 function articleQuery() {
     return __awaiter(this, void 0, Promise, function () {
-        var articles, _loop_1, _i, articles_1, article, error_1;
+        var articles, articleData, _i, articles_1, article, file, contents, data;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 6, , 7]);
-                    console.log('reading directory', articleDir);
-                    return [4 /*yield*/, promises_1.readdir(articleDir)];
+                case 0: return [4 /*yield*/, promises_1.readdir(articleDir)];
                 case 1:
                     articles = _a.sent();
-                    console.log('articles', articles);
-                    _loop_1 = function (article) {
-                        var file, data, contents;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0:
-                                    console.log('reading file', articleDir + "/" + article);
-                                    return [4 /*yield*/, promises_2["default"].readFile(articleDir + "/" + article, "utf8")];
-                                case 1:
-                                    file = _a.sent();
-                                    console.log('file contents:', file);
-                                    return [4 /*yield*/, remark_1.remark()
-                                            .use(remark_frontmatter_1["default"])
-                                            .use(function () { return function (tree) {
-                                            // Custom transformer to parse YAML frontmatter
-                                            if (tree.children.length > 0 && tree.children[0].type === 'yaml') {
-                                                data = js_yaml_1["default"].load(tree.children[0].value);
-                                                tree.children.shift();
-                                            }
-                                        }; })
-                                            .process(file)];
-                                case 2:
-                                    contents = _a.sent();
-                                    articleData.push({
-                                        title: data.title,
-                                        date: data.date,
-                                        content: contents.toString(),
-                                        tags: data.tags,
-                                        category: data.category,
-                                        image: data.image,
-                                        imageAlt: data.imageAlt
-                                    });
-                                    return [2 /*return*/];
-                            }
-                        });
-                    };
+                    articleData = [];
                     _i = 0, articles_1 = articles;
                     _a.label = 2;
                 case 2:
-                    if (!(_i < articles_1.length)) return [3 /*break*/, 5];
+                    if (!(_i < articles_1.length)) return [3 /*break*/, 6];
                     article = articles_1[_i];
-                    return [5 /*yield**/, _loop_1(article)];
+                    console.log('reading file', articleDir + "/" + article);
+                    return [4 /*yield*/, promises_2["default"].readFile(articleDir + "/" + article, 'utf8')];
                 case 3:
-                    _a.sent();
-                    _a.label = 4;
+                    file = _a.sent();
+                    return [4 /*yield*/, processor.process(file)];
                 case 4:
+                    contents = _a.sent();
+                    data = contents.data;
+                    articleData.push({
+                        title: data.title,
+                        date: data.date,
+                        content: contents.toString(),
+                        tags: data.tags,
+                        category: data.category,
+                        image: data.image,
+                        imageAlt: data.imageAlt
+                    });
+                    _a.label = 5;
+                case 5:
                     _i++;
                     return [3 /*break*/, 2];
-                case 5:
+                case 6:
                     console.log('articleData', articleData);
                     return [2 /*return*/, articleData];
-                case 6:
-                    error_1 = _a.sent();
-                    console.error('Error in articleQuery', error_1);
-                    throw error_1;
-                case 7: return [2 /*return*/];
             }
         });
     });
@@ -136,19 +125,12 @@ function sortedAlphabetically() {
 }
 function getArticles(r, s) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, _b;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    if (!!r.query.sort) return [3 /*break*/, 2];
-                    _b = (_a = s).json;
-                    return [4 /*yield*/, articleQuery()];
+        var articleData;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, articleQuery()];
                 case 1:
-                    _b.apply(_a, [_c.sent()]);
-                    return [2 /*return*/];
-                case 2: return [4 /*yield*/, articleQuery()];
-                case 3:
-                    _c.sent();
+                    articleData = _a.sent();
                     if (r.query.sort === "date") {
                         s.json(sortedByDate());
                     }
