@@ -36,13 +36,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var gray_matter_1 = require("gray-matter");
 var promises_1 = require("fs/promises");
-var path = require("path");
+var remark_1 = require("remark");
 var promises_2 = require("fs/promises");
+var path = require("path");
+var remark_frontmatter_1 = require("remark-frontmatter");
+var js_yaml_1 = require("js-yaml");
 var articleData = [];
 var articleDir = path.join(__dirname, '..', '../public/articles');
-console.log(articleDir);
 /* Testing to see if directory exists for articleDir */
 var fs = require('fs');
 if (fs.existsSync(articleDir)) {
@@ -51,38 +52,62 @@ if (fs.existsSync(articleDir)) {
 else {
     console.log('The directory does not exist.');
 }
+/* ------------------------------------------------- */
 function articleQuery() {
     return __awaiter(this, void 0, Promise, function () {
-        var articles, _i, articles_1, article, file, data, error_1;
+        var articles, _loop_1, _i, articles_1, article, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 6, , 7]);
                     console.log('reading directory', articleDir);
-                    return [4 /*yield*/, promises_2.readdir(articleDir)];
+                    return [4 /*yield*/, promises_1.readdir(articleDir)];
                 case 1:
                     articles = _a.sent();
                     console.log('articles', articles);
+                    _loop_1 = function (article) {
+                        var file, data, contents;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0:
+                                    console.log('reading file', articleDir + "/" + article);
+                                    return [4 /*yield*/, promises_2["default"].readFile(articleDir + "/" + article, "utf8")];
+                                case 1:
+                                    file = _a.sent();
+                                    console.log('file contents:', file);
+                                    return [4 /*yield*/, remark_1.remark()
+                                            .use(remark_frontmatter_1["default"])
+                                            .use(function () { return function (tree) {
+                                            // Custom transformer to parse YAML frontmatter
+                                            if (tree.children.length > 0 && tree.children[0].type === 'yaml') {
+                                                data = js_yaml_1["default"].load(tree.children[0].value);
+                                                tree.children.shift();
+                                            }
+                                        }; })
+                                            .process(file)];
+                                case 2:
+                                    contents = _a.sent();
+                                    articleData.push({
+                                        title: data.title,
+                                        date: data.date,
+                                        content: contents.toString(),
+                                        tags: data.tags,
+                                        category: data.category,
+                                        image: data.image,
+                                        imageAlt: data.imageAlt
+                                    });
+                                    return [2 /*return*/];
+                            }
+                        });
+                    };
                     _i = 0, articles_1 = articles;
                     _a.label = 2;
                 case 2:
                     if (!(_i < articles_1.length)) return [3 /*break*/, 5];
                     article = articles_1[_i];
-                    console.log('reading file', articleDir + "/" + article);
-                    return [4 /*yield*/, promises_1["default"].readFile(articleDir + "/" + article, "utf8")];
+                    return [5 /*yield**/, _loop_1(article)];
                 case 3:
-                    file = _a.sent();
-                    console.log('file contents:', file);
-                    data = gray_matter_1["default"](file).data;
-                    articleData.push({
-                        title: data.title,
-                        date: data.date,
-                        content: data.content,
-                        tags: data.tags,
-                        category: data.category,
-                        image: data.image,
-                        imageAlt: data.imageAlt
-                    });
+                    _a.sent();
                     _a.label = 4;
                 case 4:
                     _i++;
