@@ -7,16 +7,29 @@ const articleParse: Article[] = [];
 
 /**
  * @summary
+ * - Take the information from parseFile() and output to an array of objects
  * 
  */
 export default async function processMarkdown() {
-
+  await parseFiles();
+  let articleObject = {
+    title: articleParse[0].title,
+    date: articleParse[0].date,
+    content: articleParse[0].content,
+    tags: articleParse[0].tags,
+    category: articleParse[0].category,
+    image: articleParse[0].image,
+    imageAlt: articleParse[0].imageAlt,
+  }
+  return articleObject;
 }
+console.log(processMarkdown());
 /**
  * @summary
  * - Read the directory
  * - Read the files
  * - Output files to an array of objects to be parsed
+ * @returns the array of objects
  */
 async function importFiles() {
   let articleFiles: string[] = [];
@@ -31,23 +44,41 @@ async function importFiles() {
  * @summary
  * - Parse the files
  * - Output the files to an array of objects
- * @Return the array of objects
+ * @Return a parsed array of objects
  */
 async function parseFiles() {
   let parsedFiles: Article[] = [];
   const files = await importFiles();
   for (const file of files) {
-    const fileData = file.split('---');
-    const fileDataObject = {
-      title: fileData[1].split('title: ')[1],
-      date: fileData[1].split('date: ')[1],
-      tags: fileData[1].split('tags: ')[1].split(','),
-      category: fileData[1].split('category: ')[1],
-      image: fileData[1].split('image: ')[1],
-      imageAlt: fileData[1].split('imageAlt: ')[1],
-      content: fileData[2],
+    const regex = /---\n(.*\n)*?---\n(.|\n)*/;
+    const match = file.match(regex);
+    if (!match) {
+      continue;
     }
+    const metadataString = match[0].trim();
+    const metadata = metadataString.split('\n').reduce((acc, line) => {
+      const [key, value] = line.split(':');
+      return {
+        ...acc,
+        [key.trim()]: value.trim(),
+      };
+    }, {});
+    const fileDataObject: Article = {
+      title: metadata.title,
+      date: metadata.date,
+      tags: metadata.tags.split(',').map((tag) => tag.trim()),
+      category: metadata.category,
+      image: metadata.image,
+      imageAlt: metadata.imageAlt,
+      content: file.substring(match[0].length).trim(),
+    };
     parsedFiles.push(fileDataObject);
   }
-  return articleParse;
+  return parsedFiles;
 }
+
+/*
+Last left off:
+  - Need to figure out how to make the fileDataObject the correct types for each item
+  - Also need to figure out how to return the processMarkdown as an object to be used in the getArticles.ts
+*/

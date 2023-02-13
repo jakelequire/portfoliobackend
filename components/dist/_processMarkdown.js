@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -42,21 +53,39 @@ var articleDir = path_1.join(__dirname, '..', '../public/articles');
 var articleParse = [];
 /**
  * @summary
+ * - Take the information from parseFile() and output to an array of objects
  *
  */
 function processMarkdown() {
     return __awaiter(this, void 0, void 0, function () {
+        var articleObject;
         return __generator(this, function (_a) {
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, parseFiles()];
+                case 1:
+                    _a.sent();
+                    articleObject = {
+                        title: articleParse[0].title,
+                        date: articleParse[0].date,
+                        content: articleParse[0].content,
+                        tags: articleParse[0].tags,
+                        category: articleParse[0].category,
+                        image: articleParse[0].image,
+                        imageAlt: articleParse[0].imageAlt
+                    };
+                    return [2 /*return*/, articleObject];
+            }
         });
     });
 }
 exports["default"] = processMarkdown;
+console.log(processMarkdown());
 /**
  * @summary
  * - Read the directory
  * - Read the files
  * - Output files to an array of objects to be parsed
+ * @returns the array of objects
  */
 function importFiles() {
     return __awaiter(this, void 0, void 0, function () {
@@ -92,11 +121,11 @@ function importFiles() {
  * @summary
  * - Parse the files
  * - Output the files to an array of objects
- * @Return the array of objects
+ * @Return a parsed array of objects
  */
 function parseFiles() {
     return __awaiter(this, void 0, void 0, function () {
-        var parsedFiles, files, _i, files_2, file, fileData, fileDataObject;
+        var parsedFiles, files, _i, files_2, file, regex, match, metadataString, metadata, fileDataObject;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -106,20 +135,35 @@ function parseFiles() {
                     files = _a.sent();
                     for (_i = 0, files_2 = files; _i < files_2.length; _i++) {
                         file = files_2[_i];
-                        fileData = file.split('---');
+                        regex = /---\n(.*\n)*?---\n(.|\n)*/;
+                        match = file.match(regex);
+                        if (!match) {
+                            continue;
+                        }
+                        metadataString = match[0].trim();
+                        metadata = metadataString.split('\n').reduce(function (acc, line) {
+                            var _a;
+                            var _b = line.split(':'), key = _b[0], value = _b[1];
+                            return __assign(__assign({}, acc), (_a = {}, _a[key.trim()] = value.trim(), _a));
+                        }, {});
                         fileDataObject = {
-                            title: fileData[1].split('title: ')[1],
-                            date: fileData[1].split('date: ')[1],
-                            tags: fileData[1].split('tags: ')[1].split(','),
-                            category: fileData[1].split('category: ')[1],
-                            image: fileData[1].split('image: ')[1],
-                            imageAlt: fileData[1].split('imageAlt: ')[1],
-                            content: fileData[2]
+                            title: metadata.title,
+                            date: metadata.date,
+                            tags: metadata.tags.split(',').map(function (tag) { return tag.trim(); }),
+                            category: metadata.category,
+                            image: metadata.image,
+                            imageAlt: metadata.imageAlt,
+                            content: file.substring(match[0].length).trim()
                         };
                         parsedFiles.push(fileDataObject);
                     }
-                    return [2 /*return*/, articleParse];
+                    return [2 /*return*/, parsedFiles];
             }
         });
     });
 }
+/*
+Last left off:
+  - Need to figure out how to make the fileDataObject the correct types for each item
+  - Also need to figure out how to return the processMarkdown as an object to be used in the getArticles.ts
+*/ 
