@@ -6,7 +6,7 @@ import { readdir } from 'fs/promises';
 const articleData: Article[] = [];
 const articleDir = path.join(__dirname, '..', '../public/articles');
 console.log(articleDir)
-
+/* Testing to see if directory exists for articleDir */
 const fs = require('fs');
 if (fs.existsSync(articleDir)) {
     console.log('The directory exists.');
@@ -22,6 +22,7 @@ async function articleQuery(): Promise<Article[]> {
         for (const article of articles) {
             console.log('reading file', `${articleDir}/${article}`);
             const file = await fsPromises.readFile(`${articleDir}/${article}`, "utf8");
+            console.log('file contents:', file);
             const { data } = matter(file);
             articleData.push({
                 title: data.title,
@@ -40,8 +41,6 @@ async function articleQuery(): Promise<Article[]> {
         throw error;
     }
 }
-
-
 
 function sortedByDate(): Article[] {
     return articleData.sort((a, b) => {

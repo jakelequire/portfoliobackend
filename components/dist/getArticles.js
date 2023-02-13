@@ -43,6 +43,7 @@ var promises_2 = require("fs/promises");
 var articleData = [];
 var articleDir = path.join(__dirname, '..', '../public/articles');
 console.log(articleDir);
+/* Testing to see if directory exists for articleDir */
 var fs = require('fs');
 if (fs.existsSync(articleDir)) {
     console.log('The directory exists.');
@@ -71,6 +72,7 @@ function articleQuery() {
                     return [4 /*yield*/, promises_1["default"].readFile(articleDir + "/" + article, "utf8")];
                 case 3:
                     file = _a.sent();
+                    console.log('file contents:', file);
                     data = gray_matter_1["default"](file).data;
                     articleData.push({
                         title: data.title,
