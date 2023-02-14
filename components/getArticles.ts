@@ -1,9 +1,5 @@
 import processMarkdown from './_processMarkdown';
-import { 
-  Article, 
-  RequestParams, 
-  Response } 
-from './TypeDefinition/TypeDefinitions';
+import { RequestParams, Response } from './TypeDefinition/TypeDefinitions';
 /**
  * @summary Parses markdown files from a directory and outputs an `array of objects`.
  * Each object represents an article, containing metadata such as the title, date, tags, and image,
@@ -140,28 +136,3 @@ async function sortCategory() {
     throw err;
   }
 }
-/* 
-- H:
-  - /portfoliobackend
-      - /portfoliobackend
-          - /Components
-              - /TypeDefinition
-                  - TypeDefinitions.ts
-              - /dist
-                  - getArticles.js
-                  - _processMarkdown.js
-              - getArticles.ts
-              - _processMarkdown.ts
-          - /public
-              - /articles
-                  - article1.md
-                  - article2.md
-                  - article3.md
-          - /pages
-              - /api
-          - /server
-              - /dist
-                  - server.js
-              - server.js
-              - server.dev.js
-*/
