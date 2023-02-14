@@ -25,10 +25,13 @@ app.prepare().then(() => {
 
   server.get('/articles', async (req, res) => {
     try {
-      const articles = await getArticles(req);
-      res.json(articles);
-    } catch (error) {
-      console.log("ERROR IN SERVER <GET /articles>: " + error);
+    console.log("Getting articles from server");
+    const articles = await getArticles();
+    console.log("Articles received from server: ", articles.length, " articles")
+    req.articles = articles;
+    return handle(req, res);
+    } catch (err) {
+      console.log("ERROR IN SERVER: ", err);
     }
   });
 
