@@ -50,82 +50,111 @@ function getArticles(req, res) {
 exports["default"] = getArticles;
 function sortByDate() {
     return __awaiter(this, void 0, void 0, function () {
-        var articles, sortedArticles;
+        var articles, sortedArticles, err;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
                 case 1:
                     articles = _a.sent();
-                    sortedArticles = articles.sort(function (a, b) {
-                        var dateA = new Date(a.date);
-                        var dateB = new Date(b.date);
-                        return dateB.getTime() - dateA.getTime();
-                    });
-                    return [2 /*return*/, sortedArticles];
+                    try {
+                        sortedArticles = articles.sort(function (a, b) {
+                            var dateA = new Date(a.date);
+                            var dateB = new Date(b.date);
+                            return dateB.getTime() - dateA.getTime();
+                        });
+                        return [2 /*return*/, sortedArticles];
+                    }
+                    catch (error) {
+                        err = new Error('Cannot read file');
+                        throw err;
+                    }
+                    return [2 /*return*/];
             }
         });
     });
 }
 function sortAlphabetically() {
     return __awaiter(this, void 0, void 0, function () {
-        var articles, sortedArticles;
+        var articles, sortedArticles, err;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
                 case 1:
                     articles = _a.sent();
-                    sortedArticles = articles.sort(function (a, b) {
-                        var titleA = a.title.toUpperCase();
-                        var titleB = b.title.toUpperCase();
-                        return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
-                    });
-                    return [2 /*return*/, sortedArticles];
+                    try {
+                        sortedArticles = articles.sort(function (a, b) {
+                            var titleA = a.title.toUpperCase();
+                            var titleB = b.title.toUpperCase();
+                            return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
+                        });
+                        return [2 /*return*/, sortedArticles];
+                    }
+                    catch (error) {
+                        err = new Error('Cannot read file');
+                        throw err;
+                    }
+                    return [2 /*return*/];
             }
         });
     });
 }
 function sortTags() {
     return __awaiter(this, void 0, void 0, function () {
-        var articles, sortedArticles;
+        var articles, sortedArticles, err;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
                 case 1:
                     articles = _a.sent();
-                    sortedArticles = articles.sort(function (a, b) {
-                        var tagA = a.tags.toUpperCase();
-                        var tagB = b.tags.toUpperCase();
-                        return (tagA < tagB) ? -1 : (tagA > tagB) ? 1 : 0;
-                    });
-                    return [2 /*return*/, sortedArticles];
+                    try {
+                        sortedArticles = articles.sort(function (a, b) {
+                            var tagA = a.tags.toUpperCase();
+                            var tagB = b.tags.toUpperCase();
+                            return (tagA < tagB) ? -1 : (tagA > tagB) ? 1 : 0;
+                        });
+                        return [2 /*return*/, sortedArticles];
+                    }
+                    catch (error) {
+                        err = new Error('Cannot read file');
+                        throw err;
+                    }
+                    return [2 /*return*/];
             }
         });
     });
 }
 function sortCategory() {
     return __awaiter(this, void 0, void 0, function () {
-        var articles, sortedArticles;
+        var articles, sortedArticles, err;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
                 case 1:
                     articles = _a.sent();
-                    sortedArticles = articles.sort(function (a, b) {
-                        var categoryA = a.category.toUpperCase();
-                        var categoryB = b.category.toUpperCase();
-                        return (categoryA < categoryB) ? -1 : (categoryA > categoryB) ? 1 : 0;
-                    });
-                    return [2 /*return*/, sortedArticles];
+                    try {
+                        sortedArticles = articles.sort(function (a, b) {
+                            var categoryA = a.category.toUpperCase();
+                            var categoryB = b.category.toUpperCase();
+                            return (categoryA < categoryB) ? -1 : (categoryA > categoryB) ? 1 : 0;
+                        });
+                        return [2 /*return*/, sortedArticles];
+                    }
+                    catch (error) {
+                        err = new Error('Cannot read file');
+                        throw err;
+                    }
+                    return [2 /*return*/];
             }
         });
     });
 }
 function sortArticles(sortBy) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a;
+        var _a, error_1, err;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
+                    _b.trys.push([0, 12, , 13]);
                     _a = sortBy;
                     switch (_a) {
                         case 'date': return [3 /*break*/, 1];
@@ -144,6 +173,12 @@ function sortArticles(sortBy) {
                 case 8: return [2 /*return*/, _b.sent()];
                 case 9: return [4 /*yield*/, sortByDate()];
                 case 10: return [2 /*return*/, _b.sent()];
+                case 11: return [3 /*break*/, 13];
+                case 12:
+                    error_1 = _b.sent();
+                    err = new Error('Cannot read file');
+                    throw err;
+                case 13: return [2 /*return*/];
             }
         });
     });
