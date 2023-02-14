@@ -37,16 +37,117 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var path_1 = require("path");
+var _processMarkdown_1 = require("./_processMarkdown");
 var articleDir = path_1.join(__dirname, '..', '../public/articles');
 var articleParse = [];
 function getArticles(req, res) {
-    return __awaiter(this, void 0, Promise, function () {
+    return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             return [2 /*return*/];
         });
     });
 }
 exports["default"] = getArticles;
+function sortByDate() {
+    return __awaiter(this, void 0, void 0, function () {
+        var articles, sortedArticles;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
+                case 1:
+                    articles = _a.sent();
+                    sortedArticles = articles.sort(function (a, b) {
+                        var dateA = new Date(a.date);
+                        var dateB = new Date(b.date);
+                        return dateB.getTime() - dateA.getTime();
+                    });
+                    return [2 /*return*/, sortedArticles];
+            }
+        });
+    });
+}
+function sortAlphabetically() {
+    return __awaiter(this, void 0, void 0, function () {
+        var articles, sortedArticles;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
+                case 1:
+                    articles = _a.sent();
+                    sortedArticles = articles.sort(function (a, b) {
+                        var titleA = a.title.toUpperCase();
+                        var titleB = b.title.toUpperCase();
+                        return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
+                    });
+                    return [2 /*return*/, sortedArticles];
+            }
+        });
+    });
+}
+function sortTags() {
+    return __awaiter(this, void 0, void 0, function () {
+        var articles, sortedArticles;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
+                case 1:
+                    articles = _a.sent();
+                    sortedArticles = articles.sort(function (a, b) {
+                        var tagA = a.tags.toUpperCase();
+                        var tagB = b.tags.toUpperCase();
+                        return (tagA < tagB) ? -1 : (tagA > tagB) ? 1 : 0;
+                    });
+                    return [2 /*return*/, sortedArticles];
+            }
+        });
+    });
+}
+function sortCategory() {
+    return __awaiter(this, void 0, void 0, function () {
+        var articles, sortedArticles;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
+                case 1:
+                    articles = _a.sent();
+                    sortedArticles = articles.sort(function (a, b) {
+                        var categoryA = a.category.toUpperCase();
+                        var categoryB = b.category.toUpperCase();
+                        return (categoryA < categoryB) ? -1 : (categoryA > categoryB) ? 1 : 0;
+                    });
+                    return [2 /*return*/, sortedArticles];
+            }
+        });
+    });
+}
+function sortArticles(sortBy) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _a = sortBy;
+                    switch (_a) {
+                        case 'date': return [3 /*break*/, 1];
+                        case 'alphabetically': return [3 /*break*/, 3];
+                        case 'tags': return [3 /*break*/, 5];
+                        case 'category': return [3 /*break*/, 7];
+                    }
+                    return [3 /*break*/, 9];
+                case 1: return [4 /*yield*/, sortByDate()];
+                case 2: return [2 /*return*/, _b.sent()];
+                case 3: return [4 /*yield*/, sortAlphabetically()];
+                case 4: return [2 /*return*/, _b.sent()];
+                case 5: return [4 /*yield*/, sortTags()];
+                case 6: return [2 /*return*/, _b.sent()];
+                case 7: return [4 /*yield*/, sortCategory()];
+                case 8: return [2 /*return*/, _b.sent()];
+                case 9: return [4 /*yield*/, sortByDate()];
+                case 10: return [2 /*return*/, _b.sent()];
+            }
+        });
+    });
+}
 /*
 - H:
   - /portfoliobackend

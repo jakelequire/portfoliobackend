@@ -34,7 +34,7 @@ export default async function processMarkdown() {
 /**
  * @summary Import the files from the directory and output to an array of objects
  * 
- * @Return an array of objects
+ * @return an array of objects
  * 
  * @throws {Error} If the file cannot be read
  */
@@ -56,7 +56,7 @@ async function importFiles() {
  * @summary Parse the files from the directory and output to an array of objects
  * using Regular Expressions to parse the metadata and content of the article.
  *  
- * @Return a parsed array of objects
+ * @return a parsed array of objects
  * 
  * @throws {Error} If the file cannot be read
  */
