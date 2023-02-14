@@ -46,50 +46,66 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 exports.__esModule = true;
 var fs_1 = require("fs");
 var path_1 = require("path");
 var articleDir = path_1.join(__dirname, '..', '../public/articles');
 var articleParse = [];
 /**
- * @summary
- * - Take the information from parseFile() and output to an array of objects
+ * @summary Parses markdown files from a directory and outputs an `array of objects`.
+ * Each object represents an article, containing metadata such as the title, date, tags, and image,
+ * as well as the content of the article.
  *
+ * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
+ *
+ * @throws {Error} If the file cannot be read
  */
 function processMarkdown() {
     return __awaiter(this, void 0, void 0, function () {
-        var articleObject;
+        var err;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, parseFiles()];
                 case 1:
                     _a.sent();
-                    articleObject = {
-                        title: articleParse[0].title,
-                        date: articleParse[0].date,
-                        content: articleParse[0].content,
-                        tags: articleParse[0].tags,
-                        category: articleParse[0].category,
-                        image: articleParse[0].image,
-                        imageAlt: articleParse[0].imageAlt
-                    };
-                    return [2 /*return*/, articleObject];
+                    try {
+                        return [2 /*return*/, articleParse.map(function (article) { return ({
+                                title: article.title,
+                                date: article.date,
+                                content: article.content,
+                                tags: article.tags,
+                                category: article.category,
+                                image: article.image,
+                                imageAlt: article.imageAlt
+                            }); })];
+                    }
+                    catch (error) {
+                        err = new Error('Cannot read file');
+                        throw err;
+                    }
+                    return [2 /*return*/];
             }
         });
     });
 }
 exports["default"] = processMarkdown;
-console.log(processMarkdown());
 /**
- * @summary
- * - Read the directory
- * - Read the files
- * - Output files to an array of objects to be parsed
- * @returns the array of objects
+ * @summary Import the files from the directory and output to an array of objects
+ *
+ * @Return an array of objects
+ *
+ * @throws {Error} If the file cannot be read
  */
 function importFiles() {
     return __awaiter(this, void 0, void 0, function () {
-        var articleFiles, files, _i, files_1, file, fileData;
+        var articleFiles, files, _i, files_1, file, fileData, error_1, err;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -97,35 +113,45 @@ function importFiles() {
                     return [4 /*yield*/, fs_1.promises.readdir(articleDir)];
                 case 1:
                     files = _a.sent();
-                    _i = 0, files_1 = files;
                     _a.label = 2;
                 case 2:
-                    if (!(_i < files_1.length)) return [3 /*break*/, 5];
+                    _a.trys.push([2, 7, , 8]);
+                    _i = 0, files_1 = files;
+                    _a.label = 3;
+                case 3:
+                    if (!(_i < files_1.length)) return [3 /*break*/, 6];
                     file = files_1[_i];
                     return [4 /*yield*/, fs_1.promises.readFile(articleDir + "/" + file, 'utf8')];
-                case 3:
+                case 4:
                     fileData = _a.sent();
                     articleFiles.push(fileData);
-                    _a.label = 4;
-                case 4:
-                    _i++;
-                    return [3 /*break*/, 2];
+                    _a.label = 5;
                 case 5:
+                    _i++;
+                    return [3 /*break*/, 3];
+                case 6:
                     ;
                     return [2 /*return*/, articleFiles];
+                case 7:
+                    error_1 = _a.sent();
+                    err = new Error('Cannot read file');
+                    throw err;
+                case 8: return [2 /*return*/];
             }
         });
     });
 }
 /**
- * @summary
- * - Parse the files
- * - Output the files to an array of objects
+ * @summary Parse the files from the directory and output to an array of objects
+ * using Regular Expressions to parse the metadata and content of the article.
+ *
  * @Return a parsed array of objects
+ *
+ * @throws {Error} If the file cannot be read
  */
 function parseFiles() {
     return __awaiter(this, void 0, void 0, function () {
-        var parsedFiles, files, _i, files_2, file, regex, match, metadataString, metadata, fileDataObject;
+        var parsedFiles, files, _i, files_2, file, regex, match, metadataString, metadata, content, err;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -133,37 +159,42 @@ function parseFiles() {
                     return [4 /*yield*/, importFiles()];
                 case 1:
                     files = _a.sent();
-                    for (_i = 0, files_2 = files; _i < files_2.length; _i++) {
-                        file = files_2[_i];
-                        regex = /---\n(.*\n)*?---\n(.|\n)*/;
-                        match = file.match(regex);
-                        if (!match) {
-                            continue;
+                    try {
+                        for (_i = 0, files_2 = files; _i < files_2.length; _i++) {
+                            file = files_2[_i];
+                            regex = /---\n(.*\n)*?---\n(.|\n)*/;
+                            match = file.match(regex);
+                            if (!match) {
+                                continue;
+                            }
+                            metadataString = match[0].trim();
+                            metadata = metadataString.split('\n').reduce(function (acc, line) {
+                                var _a, _b;
+                                var _c = line.split(':'), key = _c[0], value = _c[1];
+                                if (key.trim() === 'tags') {
+                                    return __assign(__assign({}, acc), (_a = {}, _a[key.trim()] = __spreadArrays((acc[key.trim()] || []), [value.trim()]), _a));
+                                }
+                                return __assign(__assign({}, acc), (_b = {}, _b[key.trim()] = [value.trim()], _b));
+                            }, {});
+                            content = file.replace(metadataString, '').trim();
+                            parsedFiles.push({
+                                title: Array.isArray(metadata.title) ? metadata.title[0] : metadata.title,
+                                date: Array.isArray(metadata.date) ? metadata.date[0] : metadata.date,
+                                content: content,
+                                tags: Array.isArray(metadata.tags) ? metadata.tags.flat() : [metadata.tags],
+                                category: Array.isArray(metadata.category) ? metadata.category[0] : metadata.category,
+                                image: Array.isArray(metadata.image) ? metadata.image[0] : metadata.image,
+                                imageAlt: Array.isArray(metadata.imageAlt) ? metadata.imageAlt[0] : metadata.imageAlt
+                            });
                         }
-                        metadataString = match[0].trim();
-                        metadata = metadataString.split('\n').reduce(function (acc, line) {
-                            var _a;
-                            var _b = line.split(':'), key = _b[0], value = _b[1];
-                            return __assign(__assign({}, acc), (_a = {}, _a[key.trim()] = value.trim(), _a));
-                        }, {});
-                        fileDataObject = {
-                            title: metadata.title,
-                            date: metadata.date,
-                            tags: metadata.tags.split(',').map(function (tag) { return tag.trim(); }),
-                            category: metadata.category,
-                            image: metadata.image,
-                            imageAlt: metadata.imageAlt,
-                            content: file.substring(match[0].length).trim()
-                        };
-                        parsedFiles.push(fileDataObject);
+                        return [2 /*return*/, parsedFiles];
                     }
-                    return [2 /*return*/, parsedFiles];
+                    catch (error) {
+                        err = new Error('Cannot read file');
+                        throw err;
+                    }
+                    return [2 /*return*/];
             }
         });
     });
 }
-/*
-Last left off:
-  - Need to figure out how to make the fileDataObject the correct types for each item
-  - Also need to figure out how to return the processMarkdown as an object to be used in the getArticles.ts
-*/ 

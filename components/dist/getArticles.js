@@ -36,138 +36,39 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var unified = function () { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
-    switch (_a.label) {
-        case 0: return [4 /*yield*/, Promise.resolve().then(function () { return require('unified'); })];
-        case 1: return [2 /*return*/, _a.sent()];
-    }
-}); }); };
-var markdown = function () { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
-    switch (_a.label) {
-        case 0: return [4 /*yield*/, Promise.resolve().then(function () { return require('remark-parse'); })];
-        case 1: return [2 /*return*/, _a.sent()];
-    }
-}); }); };
-var frontmatter = function () { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
-    switch (_a.label) {
-        case 0: return [4 /*yield*/, Promise.resolve().then(function () { return require('remark-frontmatter'); })];
-        case 1: return [2 /*return*/, _a.sent()];
-    }
-}); }); };
-var promises_1 = require("fs/promises");
-var promises_2 = require("fs/promises");
-var path = require("path");
-var processor = unified()
-    .use(markdown)
-    .use(frontmatter);
-var articleData = [];
-var articleDir = path.join(__dirname, '..', '../public/articles');
-/* Testing to see if directory exists for articleDir */
-var fs = require('fs');
-if (fs.existsSync(articleDir)) {
-    console.log('The directory exists.');
-}
-else {
-    console.log('The directory does not exist.');
-}
-/* ------------------------------------------------- */
-function articleQuery() {
+var path_1 = require("path");
+var articleDir = path_1.join(__dirname, '..', '../public/articles');
+var articleParse = [];
+function getArticles(req, res) {
     return __awaiter(this, void 0, Promise, function () {
-        var articles, articleData, _i, articles_1, article, file, contents, data;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, promises_1.readdir(articleDir)];
-                case 1:
-                    articles = _a.sent();
-                    articleData = [];
-                    _i = 0, articles_1 = articles;
-                    _a.label = 2;
-                case 2:
-                    if (!(_i < articles_1.length)) return [3 /*break*/, 6];
-                    article = articles_1[_i];
-                    console.log('reading file', articleDir + "/" + article);
-                    return [4 /*yield*/, promises_2["default"].readFile(articleDir + "/" + article, 'utf8')];
-                case 3:
-                    file = _a.sent();
-                    return [4 /*yield*/, processor.process(file)];
-                case 4:
-                    contents = _a.sent();
-                    data = contents.data;
-                    articleData.push({
-                        title: data.title,
-                        date: data.date,
-                        content: contents.toString(),
-                        tags: data.tags,
-                        category: data.category,
-                        image: data.image,
-                        imageAlt: data.imageAlt
-                    });
-                    _a.label = 5;
-                case 5:
-                    _i++;
-                    return [3 /*break*/, 2];
-                case 6:
-                    console.log('articleData', articleData);
-                    return [2 /*return*/, articleData];
-            }
-        });
-    });
-}
-function sortedByDate() {
-    return articleData.sort(function (a, b) {
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-    });
-}
-function sortedAlphabetically() {
-    return articleData.sort(function (a, b) {
-        return a.title.localeCompare(b.title);
-    });
-}
-function getArticles(r, s) {
-    return __awaiter(this, void 0, void 0, function () {
-        var articleData;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, articleQuery()];
-                case 1:
-                    articleData = _a.sent();
-                    if (r.query.sort === "date") {
-                        s.json(sortedByDate());
-                    }
-                    else if (r.query.sort === "alphabetically") {
-                        s.json(sortedAlphabetically());
-                    }
-                    else {
-                        s.json(articleData);
-                    }
-                    return [2 /*return*/];
-            }
+            return [2 /*return*/];
         });
     });
 }
 exports["default"] = getArticles;
 /*
 - H:
-    - /portfoliobackend
-        - /portfoliobackend
-            - /Components
-                - /TypeDefinition
-                    - TypeDefinitions.ts
-                - /dist
-                    - getArticles.js
-                    - _processMarkdown.js
-                - getArticles.ts
-                - _processMarkdown.ts
-            - /public
-                - /articles
-                    - article1.md
-                    - article2.md
-                    - article3.md
-            - /pages
-                - /api
-            - /server
-                - /dist
-                    - server.js
-                - server.js
-                - server.dev.js
+  - /portfoliobackend
+      - /portfoliobackend
+          - /Components
+              - /TypeDefinition
+                  - TypeDefinitions.ts
+              - /dist
+                  - getArticles.js
+                  - _processMarkdown.js
+              - getArticles.ts
+              - _processMarkdown.ts
+          - /public
+              - /articles
+                  - article1.md
+                  - article2.md
+                  - article3.md
+          - /pages
+              - /api
+          - /server
+              - /dist
+                  - server.js
+              - server.js
+              - server.dev.js
 */ 
