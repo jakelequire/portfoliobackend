@@ -31,7 +31,7 @@ export default async function getArticles(req: RequestParams, res: Response) {
  * 
  * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
  * 
- * @throws {Error} If the file cannot be read
+ * @throws {Error} If search parameters are incorrect.
  */
 async function sortArticles(sortBy: string) { 
   try {
@@ -48,7 +48,7 @@ async function sortArticles(sortBy: string) {
         return await sortByDate();
     }
   } catch (error) {
-    const err = new Error('Cannot read file');
+    const err = new Error('Incorrect Search Parameters');
     throw err;
   }
 }
