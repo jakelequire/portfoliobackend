@@ -1,10 +1,9 @@
 import { promises as fs } from 'fs';
 import { join } from 'path';
-import { Article , Metadata } from './TypeDefinition/TypeDefinitions';
+import { Article } from './TypeDefinition/TypeDefinitions';
 
 const articleDir = join(__dirname, '..', '../public/articles');
 const articleParse: Article[] = [];
-
 /**
  * @summary Parses markdown files from a directory and outputs an `array of objects`.
  * Each object represents an article, containing metadata such as the title, date, tags, and image,
@@ -15,22 +14,27 @@ const articleParse: Article[] = [];
  * @throws {Error} If the file cannot be read
  */
 export default async function processMarkdown() {
+  console.log("Article Directory: " + articleDir)
   await parseFiles();
   try {
-  return articleParse.map(article => ({
-    title: article.title,
-    date: article.date,
-    content: article.content,
-    tags: article.tags,
-    category: article.category,
-    image: article.image,
-    imageAlt: article.imageAlt,
-  }));
+    if (articleParse.length === 0) {
+      return ["Not Found"];
+    }
+    return articleParse.map(article => ({
+      title: article.title,
+      date: article.date,
+      content: article.content,
+      tags: article.tags,
+      category: article.category,
+      image: article.image,
+      imageAlt: article.imageAlt,
+    }));
   } catch (error) {
-    const err = new Error('Cannot read file');
+    const err = new Error('ERROR <processMarkdown>: Cannot read files');
     throw err;
   }
 }
+
 /**
  * @summary Import the files from the directory and output to an array of objects
  * 
@@ -48,7 +52,7 @@ async function importFiles() {
     };
     return articleFiles;
   } catch (error) {
-    const err = new Error('Cannot read file');
+    const err = new Error('ERROR <importFiles>: Cannot find files');
     throw err;
   }
 }
@@ -97,7 +101,7 @@ async function parseFiles() {
     }
     return parsedFiles;
   } catch (error) {
-    const err = new Error('Cannot read file');
+    const err = new Error('ERROR <parseFiles>: Cannot read file');
     throw err;
   }
 }

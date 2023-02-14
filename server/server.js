@@ -23,9 +23,13 @@ app.prepare().then(() => {
     return handle(req, res);
   });
 
-  server.get('/articles', (req, res) => {
-    console.log("Hello! This is a test :)")
-    return getArticles(req, res);
+  server.get('/articles', async (req, res) => {
+    try {
+      const articles = await getArticles(req);
+      res.json(articles);
+    } catch (error) {
+      console.log("ERROR IN SERVER <GET /articles>: " + error);
+    }
   });
 
   server.listen(PORT, err => {

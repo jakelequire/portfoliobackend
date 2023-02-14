@@ -20,7 +20,7 @@ export default async function getArticles(req: RequestParams, res: Response) {
   try {
     res.status(200).json(articles);
   } catch (error) {
-    const err = new Error('Cannot read file');
+    const err = new Error('ERROR <getArticles>: Cannot read file');
     throw err;
   }
 }
@@ -48,7 +48,7 @@ async function sortArticles(sortBy: string) {
         return await sortByDate();
     }
   } catch (error) {
-    const err = new Error('Incorrect Search Parameters');
+    const err = new Error('ERROR <sortArticles>: Incorrect search parameters');
     throw err;
   }
 }
@@ -69,7 +69,7 @@ async function sortByDate() {
     });
     return sortedArticles;
   } catch (error) {
-    const err = new Error('Cannot read file');
+    const err = new Error('ERROR <sortByDate>: Cannot read file');
     throw err;
   }
 }
@@ -90,7 +90,7 @@ async function sortAlphabetically() {
     });
     return sortedArticles;
   } catch (error) {
-    const err = new Error('Cannot read file');
+    const err = new Error('ERROR <sortAlphabetically>: Cannot read file');
     throw err;
   }
 }
@@ -111,7 +111,7 @@ async function sortTags() {
     });
     return sortedArticles;
   } catch (error) {
-    const err = new Error('Cannot read file');
+    const err = new Error('ERROR <sortTags>: Cannot read file');
     throw err;
   }
 }
@@ -132,7 +132,7 @@ async function sortCategory() {
     });
     return sortedArticles;
   } catch (error) {
-    const err = new Error('Cannot read file');
+    const err = new Error('ERROR <sortCategory>: Cannot read file');
     throw err;
   }
 }
