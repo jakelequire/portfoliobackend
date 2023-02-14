@@ -21,6 +21,7 @@
     "peacock.color": "#064A48",
     "compile-hero.disable-compile-files-on-did-save-code": false,
     "cSpell.words": [
-        "portfoliobackend"
+        "portfoliobackend",
+        "trys"
     ]
 }

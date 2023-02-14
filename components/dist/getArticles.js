@@ -36,118 +36,53 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var path_1 = require("path");
 var _processMarkdown_1 = require("./_processMarkdown");
-var articleDir = path_1.join(__dirname, '..', '../public/articles');
-var articleParse = [];
+/**
+ * @summary Parses markdown files from a directory and outputs an `array of objects`.
+ * Each object represents an article, containing metadata such as the title, date, tags, and image,
+ * as well as the content of the article. The articles can be sorted by date, alphabetically, tags,
+ * or category.
+ *
+ * @param {RequestParams} req - The request parameters
+ *
+ * @param {Response} res - The response object
+ *
+ * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
+ *
+ * @throws {Error} If the file cannot be read
+ */
 function getArticles(req, res) {
     return __awaiter(this, void 0, void 0, function () {
+        var sort, articles, err;
         return __generator(this, function (_a) {
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0:
+                    sort = req.query.sort;
+                    return [4 /*yield*/, sortArticles(sort)];
+                case 1:
+                    articles = _a.sent();
+                    try {
+                        res.status(200).json(articles);
+                    }
+                    catch (error) {
+                        err = new Error('Cannot read file');
+                        throw err;
+                    }
+                    return [2 /*return*/];
+            }
         });
     });
 }
 exports["default"] = getArticles;
-function sortByDate() {
-    return __awaiter(this, void 0, void 0, function () {
-        var articles, sortedArticles, err;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
-                case 1:
-                    articles = _a.sent();
-                    try {
-                        sortedArticles = articles.sort(function (a, b) {
-                            var dateA = new Date(a.date);
-                            var dateB = new Date(b.date);
-                            return dateB.getTime() - dateA.getTime();
-                        });
-                        return [2 /*return*/, sortedArticles];
-                    }
-                    catch (error) {
-                        err = new Error('Cannot read file');
-                        throw err;
-                    }
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-function sortAlphabetically() {
-    return __awaiter(this, void 0, void 0, function () {
-        var articles, sortedArticles, err;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
-                case 1:
-                    articles = _a.sent();
-                    try {
-                        sortedArticles = articles.sort(function (a, b) {
-                            var titleA = a.title.toUpperCase();
-                            var titleB = b.title.toUpperCase();
-                            return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
-                        });
-                        return [2 /*return*/, sortedArticles];
-                    }
-                    catch (error) {
-                        err = new Error('Cannot read file');
-                        throw err;
-                    }
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-function sortTags() {
-    return __awaiter(this, void 0, void 0, function () {
-        var articles, sortedArticles, err;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
-                case 1:
-                    articles = _a.sent();
-                    try {
-                        sortedArticles = articles.sort(function (a, b) {
-                            var tagA = a.tags.toUpperCase();
-                            var tagB = b.tags.toUpperCase();
-                            return (tagA < tagB) ? -1 : (tagA > tagB) ? 1 : 0;
-                        });
-                        return [2 /*return*/, sortedArticles];
-                    }
-                    catch (error) {
-                        err = new Error('Cannot read file');
-                        throw err;
-                    }
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-function sortCategory() {
-    return __awaiter(this, void 0, void 0, function () {
-        var articles, sortedArticles, err;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
-                case 1:
-                    articles = _a.sent();
-                    try {
-                        sortedArticles = articles.sort(function (a, b) {
-                            var categoryA = a.category.toUpperCase();
-                            var categoryB = b.category.toUpperCase();
-                            return (categoryA < categoryB) ? -1 : (categoryA > categoryB) ? 1 : 0;
-                        });
-                        return [2 /*return*/, sortedArticles];
-                    }
-                    catch (error) {
-                        err = new Error('Cannot read file');
-                        throw err;
-                    }
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
+/**
+ * @summary Sorts the articles by the query parameter
+ *
+ * @param {string} sortBy - The query parameter
+ *
+ * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
+ *
+ * @throws {Error} If the file cannot be read
+ */
 function sortArticles(sortBy) {
     return __awaiter(this, void 0, void 0, function () {
         var _a, error_1, err;
@@ -179,6 +114,134 @@ function sortArticles(sortBy) {
                     err = new Error('Cannot read file');
                     throw err;
                 case 13: return [2 /*return*/];
+            }
+        });
+    });
+}
+/**
+ * @summary Sorts the articles by date
+ *
+ * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
+ *
+ * @throws {Error} If the file cannot be read
+ */
+function sortByDate() {
+    return __awaiter(this, void 0, void 0, function () {
+        var articles, sortedArticles, err;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
+                case 1:
+                    articles = _a.sent();
+                    try {
+                        sortedArticles = articles.sort(function (a, b) {
+                            var dateA = new Date(a.date);
+                            var dateB = new Date(b.date);
+                            return dateB.getTime() - dateA.getTime();
+                        });
+                        return [2 /*return*/, sortedArticles];
+                    }
+                    catch (error) {
+                        err = new Error('Cannot read file');
+                        throw err;
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+/**
+ * @summary Sorts the articles alphabetically
+ *
+ * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
+ *
+ * @throws {Error} If the file cannot be read
+ */
+function sortAlphabetically() {
+    return __awaiter(this, void 0, void 0, function () {
+        var articles, sortedArticles, err;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
+                case 1:
+                    articles = _a.sent();
+                    try {
+                        sortedArticles = articles.sort(function (a, b) {
+                            var titleA = a.title.toUpperCase();
+                            var titleB = b.title.toUpperCase();
+                            return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
+                        });
+                        return [2 /*return*/, sortedArticles];
+                    }
+                    catch (error) {
+                        err = new Error('Cannot read file');
+                        throw err;
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+/**
+ * @summary Sorts the articles by tags
+ *
+ * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
+ *
+ * @throws {Error} If the file cannot be read
+ */
+function sortTags() {
+    return __awaiter(this, void 0, void 0, function () {
+        var articles, sortedArticles, err;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
+                case 1:
+                    articles = _a.sent();
+                    try {
+                        sortedArticles = articles.sort(function (a, b) {
+                            var tagA = a.tags.toUpperCase();
+                            var tagB = b.tags.toUpperCase();
+                            return (tagA < tagB) ? -1 : (tagA > tagB) ? 1 : 0;
+                        });
+                        return [2 /*return*/, sortedArticles];
+                    }
+                    catch (error) {
+                        err = new Error('Cannot read file');
+                        throw err;
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+/**
+ * @summary Sorts the articles by category
+ *
+ * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
+ *
+ * @throws {Error} If the file cannot be read
+ */
+function sortCategory() {
+    return __awaiter(this, void 0, void 0, function () {
+        var articles, sortedArticles, err;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
+                case 1:
+                    articles = _a.sent();
+                    try {
+                        sortedArticles = articles.sort(function (a, b) {
+                            var categoryA = a.category.toUpperCase();
+                            var categoryB = b.category.toUpperCase();
+                            return (categoryA < categoryB) ? -1 : (categoryA > categoryB) ? 1 : 0;
+                        });
+                        return [2 /*return*/, sortedArticles];
+                    }
+                    catch (error) {
+                        err = new Error('Cannot read file');
+                        throw err;
+                    }
+                    return [2 /*return*/];
             }
         });
     });
