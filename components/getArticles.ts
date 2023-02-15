@@ -16,6 +16,7 @@ import { RequestParams, Response } from './TypeDefinition/TypeDefinitions';
  * @throws {Error} If search parameters are incorrect.
  */
 export default async function getArticles(req: RequestParams, res: Response) {
+  console.log("Request: " + req )
   const query = req.query.sort;
   const articles = await sortArticles(query);
   if(query) {

@@ -9,6 +9,7 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 const PORT = 3001;
 
+
 const corsOptions = {
   origin: ["http://localhost:3000/testdev", "http://localhost:3000"],
   credentials: true,
@@ -25,14 +26,9 @@ app.prepare().then(() => {
 
   server.get('/articles', async (req, res) => {
     try {
-    console.log("Getting articles from server");
-    const articles = await getArticles();
-    await articles && console.log("Articles received from server: ", articles.length, " articles")
-    console.log("Articles received from server: ", articles.length, " articles")
-    req.articles = articles;
-    return handle(req, res);
+    return await getArticles(req, res);
     } catch (err) {
-      console.log("ERROR IN SERVER: ", err);
+      console.log("SERVER ERROR: " + err);
     }
   });
 

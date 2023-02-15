@@ -58,6 +58,7 @@ function getArticles(req, res) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    console.log("Request: " + req);
                     query = req.query.sort;
                     return [4 /*yield*/, sortArticles(query)];
                 case 1:
