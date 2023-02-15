@@ -50,23 +50,34 @@ var _processMarkdown_1 = require("./_processMarkdown");
  * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
  *
  * @throws {Error} If the file cannot be read
+ * @throws {Error} If search parameters are incorrect.
  */
 function getArticles(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var sort, articles, err;
+        var query, articles, err;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    sort = req.query.sort;
-                    return [4 /*yield*/, sortArticles(sort)];
+                    query = req.query.sort;
+                    return [4 /*yield*/, sortArticles(query)];
                 case 1:
                     articles = _a.sent();
-                    try {
-                        res.status(200).json(articles);
+                    if (query) {
+                        try {
+                            if (articles.length === 0) {
+                                res.status(404).json({ message: 'Not Found' });
+                            }
+                            else {
+                                res.status(200).json(articles);
+                            }
+                        }
+                        catch (error) {
+                            err = new Error('ERROR <getArticles>: Cannot read file');
+                            throw err;
+                        }
                     }
-                    catch (error) {
-                        err = new Error('ERROR <getArticles>: Cannot read file');
-                        throw err;
+                    else {
+                        res.status(200).json(articles);
                     }
                     return [2 /*return*/];
             }

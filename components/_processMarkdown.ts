@@ -34,7 +34,6 @@ export default async function processMarkdown() {
     throw err;
   }
 }
-
 /**
  * @summary Import the files from the directory and output to an array of objects
  * 

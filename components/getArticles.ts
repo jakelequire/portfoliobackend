@@ -13,16 +13,25 @@ import { RequestParams, Response } from './TypeDefinition/TypeDefinitions';
  * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
  * 
  * @throws {Error} If the file cannot be read
+ * @throws {Error} If search parameters are incorrect.
  */
 export default async function getArticles(req: RequestParams, res: Response) {
-  const { sort } = req.query;
-  const articles = await sortArticles(sort);
-  try {
-    res.status(200).json(articles);
-  } catch (error) {
-    const err = new Error('ERROR <getArticles>: Cannot read file');
-    throw err;
-  }
+  const query = req.query.sort;
+  const articles = await sortArticles(query);
+  if(query) {
+    try {
+      if (articles.length === 0) {
+        res.status(404).json({ message: 'Not Found' });
+      } else {
+        res.status(200).json(articles);
+      }
+    } catch (error) {
+      const err = new Error('ERROR <getArticles>: Cannot read file');
+      throw err;
+    }
+    } else {
+      res.status(200).json(articles);
+    }
 }
 /**
  * #### Sorts the articles by the `query parameter`.

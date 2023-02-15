@@ -27,6 +27,7 @@ app.prepare().then(() => {
     try {
     console.log("Getting articles from server");
     const articles = await getArticles();
+    await articles && console.log("Articles received from server: ", articles.length, " articles")
     console.log("Articles received from server: ", articles.length, " articles")
     req.articles = articles;
     return handle(req, res);
