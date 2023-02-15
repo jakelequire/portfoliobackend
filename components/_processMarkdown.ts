@@ -5,7 +5,7 @@ import { Article } from './TypeDefinition/TypeDefinitions';
 const articleDir = join(__dirname, '..', '../public/articles');
 const articleParse: Article[] = [];
 /**
- * @summary Parses markdown files from a directory and outputs an `array of objects`.
+ * #### Parses markdown files from a directory and outputs an `array of objects`.
  * Each object represents an article, containing metadata such as the title, date, tags, and image,
  * as well as the content of the article.
  * 

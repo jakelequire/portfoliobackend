@@ -59,7 +59,7 @@ var path_1 = require("path");
 var articleDir = path_1.join(__dirname, '..', '../public/articles');
 var articleParse = [];
 /**
- * @summary Parses markdown files from a directory and outputs an `array of objects`.
+ * #### Parses markdown files from a directory and outputs an `array of objects`.
  * Each object represents an article, containing metadata such as the title, date, tags, and image,
  * as well as the content of the article.
  *
@@ -72,10 +72,15 @@ function processMarkdown() {
         var err;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, parseFiles()];
+                case 0:
+                    console.log("Article Directory: " + articleDir);
+                    return [4 /*yield*/, parseFiles()];
                 case 1:
                     _a.sent();
                     try {
+                        if (articleParse.length === 0) {
+                            return [2 /*return*/, ["Not Found"]];
+                        }
                         return [2 /*return*/, articleParse.map(function (article) { return ({
                                 title: article.title,
                                 date: article.date,
@@ -87,7 +92,7 @@ function processMarkdown() {
                             }); })];
                     }
                     catch (error) {
-                        err = new Error('Cannot read file');
+                        err = new Error('ERROR <processMarkdown>: Cannot read files');
                         throw err;
                     }
                     return [2 /*return*/];
@@ -134,7 +139,7 @@ function importFiles() {
                     return [2 /*return*/, articleFiles];
                 case 7:
                     error_1 = _a.sent();
-                    err = new Error('Cannot read file');
+                    err = new Error('ERROR <importFiles>: Cannot find files');
                     throw err;
                 case 8: return [2 /*return*/];
             }
@@ -190,7 +195,7 @@ function parseFiles() {
                         return [2 /*return*/, parsedFiles];
                     }
                     catch (error) {
-                        err = new Error('Cannot read file');
+                        err = new Error('ERROR <parseFiles>: Cannot read file');
                         throw err;
                     }
                     return [2 /*return*/];

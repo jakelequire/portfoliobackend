@@ -1,7 +1,7 @@
 import processMarkdown from './_processMarkdown';
 import { RequestParams, Response } from './TypeDefinition/TypeDefinitions';
 /**
- * @summary Parses markdown files from a directory and outputs an `array of objects`.
+ * #### Parses markdown files from a directory and outputs an `array of objects`.
  * Each object represents an article, containing metadata such as the title, date, tags, and image,
  * as well as the content of the article. The articles can be sorted by date, alphabetically, tags, 
  * or category.
@@ -25,7 +25,7 @@ export default async function getArticles(req: RequestParams, res: Response) {
   }
 }
 /**
- * @summary Sorts the articles by the query parameter
+ * #### Sorts the articles by the `query parameter`.
  * 
  * @param {string} sortBy - The query parameter
  * 
@@ -53,7 +53,7 @@ async function sortArticles(sortBy: string) {
   }
 }
 /**
- * @summary Sorts the articles by date
+ * #### Sorts the articles by `date`.
  * 
  * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
  * 
@@ -74,7 +74,7 @@ async function sortByDate() {
   }
 }
 /**
- * @summary Sorts the articles alphabetically
+ * #### Sorts the articles `alphabetically`.
  * 
  * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
  * 
@@ -95,7 +95,7 @@ async function sortAlphabetically() {
   }
 }
 /**
- * @summary Sorts the articles by tags
+ * #### Sorts the articles by `tags`.
  * 
  * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
  * 
@@ -116,7 +116,7 @@ async function sortTags() {
   }
 }
 /**
- * @summary Sorts the articles by category
+ * #### Sorts the articles by `category`.
  * 
  * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
  * 

@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var _processMarkdown_1 = require("./_processMarkdown");
 /**
- * @summary Parses markdown files from a directory and outputs an `array of objects`.
+ * #### Parses markdown files from a directory and outputs an `array of objects`.
  * Each object represents an article, containing metadata such as the title, date, tags, and image,
  * as well as the content of the article. The articles can be sorted by date, alphabetically, tags,
  * or category.
@@ -65,7 +65,7 @@ function getArticles(req, res) {
                         res.status(200).json(articles);
                     }
                     catch (error) {
-                        err = new Error('Cannot read file');
+                        err = new Error('ERROR <getArticles>: Cannot read file');
                         throw err;
                     }
                     return [2 /*return*/];
@@ -75,13 +75,13 @@ function getArticles(req, res) {
 }
 exports["default"] = getArticles;
 /**
- * @summary Sorts the articles by the query parameter
+ * #### Sorts the articles by the `query parameter`.
  *
  * @param {string} sortBy - The query parameter
  *
  * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
  *
- * @throws {Error} If the file cannot be read
+ * @throws {Error} If search parameters are incorrect.
  */
 function sortArticles(sortBy) {
     return __awaiter(this, void 0, void 0, function () {
@@ -111,7 +111,7 @@ function sortArticles(sortBy) {
                 case 11: return [3 /*break*/, 13];
                 case 12:
                     error_1 = _b.sent();
-                    err = new Error('Cannot read file');
+                    err = new Error('ERROR <sortArticles>: Incorrect search parameters');
                     throw err;
                 case 13: return [2 /*return*/];
             }
@@ -119,7 +119,7 @@ function sortArticles(sortBy) {
     });
 }
 /**
- * @summary Sorts the articles by date
+ * #### Sorts the articles by `date`.
  *
  * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
  *
@@ -142,7 +142,7 @@ function sortByDate() {
                         return [2 /*return*/, sortedArticles];
                     }
                     catch (error) {
-                        err = new Error('Cannot read file');
+                        err = new Error('ERROR <sortByDate>: Cannot read file');
                         throw err;
                     }
                     return [2 /*return*/];
@@ -151,7 +151,7 @@ function sortByDate() {
     });
 }
 /**
- * @summary Sorts the articles alphabetically
+ * #### Sorts the articles `alphabetically`.
  *
  * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
  *
@@ -174,7 +174,7 @@ function sortAlphabetically() {
                         return [2 /*return*/, sortedArticles];
                     }
                     catch (error) {
-                        err = new Error('Cannot read file');
+                        err = new Error('ERROR <sortAlphabetically>: Cannot read file');
                         throw err;
                     }
                     return [2 /*return*/];
@@ -183,7 +183,7 @@ function sortAlphabetically() {
     });
 }
 /**
- * @summary Sorts the articles by tags
+ * #### Sorts the articles by `tags`.
  *
  * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
  *
@@ -206,7 +206,7 @@ function sortTags() {
                         return [2 /*return*/, sortedArticles];
                     }
                     catch (error) {
-                        err = new Error('Cannot read file');
+                        err = new Error('ERROR <sortTags>: Cannot read file');
                         throw err;
                     }
                     return [2 /*return*/];
@@ -215,7 +215,7 @@ function sortTags() {
     });
 }
 /**
- * @summary Sorts the articles by category
+ * #### Sorts the articles by `category`.
  *
  * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
  *
@@ -238,7 +238,7 @@ function sortCategory() {
                         return [2 /*return*/, sortedArticles];
                     }
                     catch (error) {
-                        err = new Error('Cannot read file');
+                        err = new Error('ERROR <sortCategory>: Cannot read file');
                         throw err;
                     }
                     return [2 /*return*/];
