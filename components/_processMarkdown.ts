@@ -14,7 +14,6 @@ const articleParse: Article[] = [];
  * @throws {Error} If the file cannot be read
  */
 export default async function processMarkdown() {
-  console.log("Article Directory: " + articleDir)
   await parseFiles();
   try {
     if (articleParse.length === 0) {

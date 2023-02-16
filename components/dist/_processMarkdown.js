@@ -72,9 +72,7 @@ function processMarkdown() {
         var err;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    console.log("Article Directory: " + articleDir);
-                    return [4 /*yield*/, parseFiles()];
+                case 0: return [4 /*yield*/, parseFiles()];
                 case 1:
                     _a.sent();
                     try {

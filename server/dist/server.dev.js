@@ -27,28 +27,39 @@ app.prepare().then(function () {
     return handle(req, res);
   });
   server.get('/articles', function _callee(req, res) {
+    var method, query, sort, articles;
     return regeneratorRuntime.async(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
-            _context.next = 3;
-            return regeneratorRuntime.awrap(getArticles(req, res));
+            method = req.method, query = req.query;
+            sort = query.sort;
+            console.log("</articles> sort: " + sort);
+            console.log("</articles> method: " + method);
+            console.log("</articles> query: " + query);
+            _context.prev = 5;
+            _context.next = 8;
+            return regeneratorRuntime.awrap(getArticles(sort));
 
-          case 3:
-            return _context.abrupt("return", _context.sent);
+          case 8:
+            articles = _context.sent;
+            res.status(200).json(articles);
+            _context.next = 15;
+            break;
 
-          case 6:
-            _context.prev = 6;
-            _context.t0 = _context["catch"](0);
-            console.log("SERVER ERROR: " + _context.t0);
+          case 12:
+            _context.prev = 12;
+            _context.t0 = _context["catch"](5);
+            res.status(500).json({
+              error: _context.t0
+            }) && console.log("ERROR !</articles>: error" + _context.t0);
 
-          case 9:
+          case 15:
           case "end":
             return _context.stop();
         }
       }
-    }, null, null, [[0, 6]]);
+    }, null, null, [[5, 12]]);
   });
   server.listen(PORT, function (err) {
     if (err) throw err;
