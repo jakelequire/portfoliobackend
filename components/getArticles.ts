@@ -1,5 +1,5 @@
 import processMarkdown from './_processMarkdown';
-import { RequestParams, Response } from './TypeDefinition/TypeDefinitions';
+import { Article, RequestParams } from './TypeDefinition/TypeDefinitions';
 /**
  * #### Parses markdown files from a directory and outputs an `array of objects`.
  * Each object represents an article, containing metadata such as the title, date, tags, and image,
@@ -57,17 +57,15 @@ async function sortArticles(sortBy: string) {
  * @throws {Error} If the file cannot be read
  */
 async function sortByDate() {
-  const articles = await processMarkdown();
-  try {
-    const sortedArticles = articles.forEach((article: any) => {
-      article.date = new Date(article.date);
-    });
-    return sortedArticles;
-  } catch (error) {
-    const err = new Error('ERROR <sortByDate>: Cannot read file');
-    throw err;
-  }
+  const articles: Article[] = await processMarkdown();
+  articles.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB.getTime() - dateA.getTime();
+  });
+  return articles;
 }
+
 /**
  * #### Sorts the articles `alphabetically`.
  * 

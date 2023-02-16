@@ -68,141 +68,87 @@ var articleParse = [];
  * @throws {Error} If the file cannot be read
  */
 function processMarkdown() {
-    return __awaiter(this, void 0, void 0, function () {
-        var err;
+    return __awaiter(this, void 0, Promise, function () {
+        var files, parsedFiles, validFiles;
+        var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, parseFiles()];
+                case 0: return [4 /*yield*/, importFiles()];
                 case 1:
-                    _a.sent();
-                    // console.log("<processMarkdown> Fired")
-                    try {
-                        if (articleParse.length === 0) {
-                            return [2 /*return*/, ["Not Found"]];
-                        }
-                        return [2 /*return*/, articleParse.map(function (article) { return ({
-                                title: article.title,
-                                date: article.date,
-                                content: article.content,
-                                tags: article.tags,
-                                category: article.category,
-                                image: article.image,
-                                imageAlt: article.imageAlt
-                            }); })];
-                    }
-                    catch (error) {
-                        err = new Error('ERROR <processMarkdown>: Cannot read files');
-                        throw err;
-                    }
-                    return [2 /*return*/];
+                    files = _a.sent();
+                    return [4 /*yield*/, Promise.all(files.map(function (file) { return __awaiter(_this, void 0, void 0, function () {
+                            var regex, match, metadataString, metadata, content;
+                            return __generator(this, function (_a) {
+                                regex = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/;
+                                match = file.match(regex);
+                                if (!match) {
+                                    return [2 /*return*/, null];
+                                }
+                                metadataString = match[1].trim();
+                                metadata = metadataString.split('\n').reduce(function (acc, line) {
+                                    var _a, _b;
+                                    var _c = line.split(':'), key = _c[0], value = _c[1];
+                                    if (key.trim() === 'tags') {
+                                        return __assign(__assign({}, acc), (_a = {}, _a[key.trim()] = __spreadArrays((acc[key.trim()] || []), [value.trim()]), _a));
+                                    }
+                                    return __assign(__assign({}, acc), (_b = {}, _b[key.trim()] = [value.trim()], _b));
+                                }, {});
+                                content = match[2].trim();
+                                return [2 /*return*/, {
+                                        title: Array.isArray(metadata.title) ? metadata.title[0] : metadata.title,
+                                        date: Array.isArray(metadata.date) ? metadata.date[0] : metadata.date,
+                                        content: content,
+                                        tags: Array.isArray(metadata.tags) ? metadata.tags.flat() : [metadata.tags],
+                                        category: Array.isArray(metadata.category) ? metadata.category[0] : metadata.category,
+                                        image: Array.isArray(metadata.image) ? metadata.image[0] : metadata.image,
+                                        imageAlt: Array.isArray(metadata.imageAlt) ? metadata.imageAlt[0] : metadata.imageAlt
+                                    }];
+                            });
+                        }); }))];
+                case 2:
+                    parsedFiles = _a.sent();
+                    validFiles = parsedFiles.filter(function (file) { return file !== null; });
+                    articleParse.push.apply(articleParse, validFiles);
+                    return [2 /*return*/, validFiles];
             }
         });
     });
 }
 exports["default"] = processMarkdown;
 /**
- * @summary Import the files from the directory and output to an array of objects
+ * @summary Import the files from the directory and output to an array of strings
  *
- * @return an array of objects
+ * @return an array of strings
  *
  * @throws {Error} If the file cannot be read
  */
 function importFiles() {
-    return __awaiter(this, void 0, void 0, function () {
-        var articleFiles, files, _i, files_1, file, fileData, error_1, err;
+    return __awaiter(this, void 0, Promise, function () {
+        var files, fileData, error_1, err;
+        var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    articleFiles = [];
+                    _a.trys.push([0, 3, , 4]);
                     return [4 /*yield*/, fs_1.promises.readdir(articleDir)];
                 case 1:
                     files = _a.sent();
-                    // console.log("<importFiles> Fired")
-                    console.log("<importFiles> Files: " + files);
-                    _a.label = 2;
-                case 2:
-                    _a.trys.push([2, 7, , 8]);
-                    _i = 0, files_1 = files;
-                    _a.label = 3;
-                case 3:
-                    if (!(_i < files_1.length)) return [3 /*break*/, 6];
-                    file = files_1[_i];
-                    return [4 /*yield*/, fs_1.promises.readFile(articleDir + "/" + file, 'utf8')];
-                case 4:
-                    fileData = _a.sent();
-                    articleFiles.push(fileData);
-                    _a.label = 5;
-                case 5:
-                    _i++;
-                    return [3 /*break*/, 3];
-                case 6:
-                    ;
-                    return [2 /*return*/, articleFiles];
-                case 7:
-                    error_1 = _a.sent();
-                    err = new Error('ERROR <importFiles>: Cannot find files');
-                    throw err;
-                case 8: return [2 /*return*/];
-            }
-        });
-    });
-}
-/**
- * @summary Parse the files from the directory and output to an array of objects
- * using Regular Expressions to parse the metadata and content of the article.
- *
- * @return a parsed array of objects
- *
- * @throws {Error} If the file cannot be read
- */
-function parseFiles() {
-    return __awaiter(this, void 0, void 0, function () {
-        var parsedFiles, files, _i, files_2, file, regex, match, metadataString, metadata, content, err;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    parsedFiles = [];
-                    return [4 /*yield*/, importFiles()];
-                case 1:
-                    files = _a.sent();
-                    // console.log("<parseFiles> Fired")
-                    try {
-                        for (_i = 0, files_2 = files; _i < files_2.length; _i++) {
-                            file = files_2[_i];
-                            regex = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/;
-                            match = file.match(regex);
-                            console.log("<parseFiles> Match: " + match);
-                            if (!match) {
-                                continue;
-                            }
-                            metadataString = match[0].trim();
-                            metadata = metadataString.split('\n').reduce(function (acc, line) {
-                                var _a, _b;
-                                var _c = line.split(':'), key = _c[0], value = _c[1];
-                                if (key.trim() === 'tags') {
-                                    return __assign(__assign({}, acc), (_a = {}, _a[key.trim()] = __spreadArrays((acc[key.trim()] || []), [value.trim()]), _a));
+                    return [4 /*yield*/, Promise.all(files.map(function (file) { return __awaiter(_this, void 0, void 0, function () {
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0: return [4 /*yield*/, fs_1.promises.readFile(articleDir + "/" + file, 'utf8')];
+                                    case 1: return [2 /*return*/, _a.sent()];
                                 }
-                                return __assign(__assign({}, acc), (_b = {}, _b[key.trim()] = [value.trim()], _b));
-                            }, {});
-                            console.log("<parseFiles> Metadata: " + metadata);
-                            content = file.replace(metadataString, '').trim();
-                            parsedFiles.push({
-                                title: Array.isArray(metadata.title) ? metadata.title[0] : metadata.title,
-                                date: Array.isArray(metadata.date) ? metadata.date[0] : metadata.date,
-                                content: content,
-                                tags: Array.isArray(metadata.tags) ? metadata.tags.flat() : [metadata.tags],
-                                category: Array.isArray(metadata.category) ? metadata.category[0] : metadata.category,
-                                image: Array.isArray(metadata.image) ? metadata.image[0] : metadata.image,
-                                imageAlt: Array.isArray(metadata.imageAlt) ? metadata.imageAlt[0] : metadata.imageAlt
                             });
-                        }
-                        return [2 /*return*/, parsedFiles];
-                    }
-                    catch (error) {
-                        err = new Error('ERROR <parseFiles>: Cannot read file');
-                        throw err;
-                    }
-                    return [2 /*return*/];
+                        }); }))];
+                case 2:
+                    fileData = _a.sent();
+                    return [2 /*return*/, fileData];
+                case 3:
+                    error_1 = _a.sent();
+                    err = new Error('ERROR <importFiles>: Cannot read files');
+                    throw err;
+                case 4: return [2 /*return*/];
             }
         });
     });

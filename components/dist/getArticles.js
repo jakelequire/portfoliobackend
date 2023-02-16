@@ -122,23 +122,18 @@ function sortArticles(sortBy) {
  */
 function sortByDate() {
     return __awaiter(this, void 0, void 0, function () {
-        var articles, sortedArticles, err;
+        var articles;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, _processMarkdown_1["default"]()];
                 case 1:
                     articles = _a.sent();
-                    try {
-                        sortedArticles = articles.forEach(function (article) {
-                            article.date = new Date(article.date);
-                        });
-                        return [2 /*return*/, sortedArticles];
-                    }
-                    catch (error) {
-                        err = new Error('ERROR <sortByDate>: Cannot read file');
-                        throw err;
-                    }
-                    return [2 /*return*/];
+                    articles.sort(function (a, b) {
+                        var dateA = new Date(a.date);
+                        var dateB = new Date(b.date);
+                        return dateB.getTime() - dateA.getTime();
+                    });
+                    return [2 /*return*/, articles];
             }
         });
     });
