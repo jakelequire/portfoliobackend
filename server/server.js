@@ -25,10 +25,11 @@ app.prepare().then(() => {
  
   server.get('/articles', async (req, res) => {
     const { method, query } = req;
-    const { sort } = query;
-    console.log("</articles> sort: " + sort)
-    console.log("</articles> method: " + method)
-    console.log("</articles> query: " + query)
+    let { sort } = query;
+    if(sort === undefined || sort === null) {
+      res.status(400).json({ error: "sort is required" });
+      return;
+    }
     try {
       const articles = await getArticles(sort);
       res.status(200).json(articles);

@@ -34,9 +34,18 @@ app.prepare().then(function () {
           case 0:
             method = req.method, query = req.query;
             sort = query.sort;
-            console.log("</articles> sort: " + sort);
-            console.log("</articles> method: " + method);
-            console.log("</articles> query: " + query);
+
+            if (!(sort === undefined || sort === null)) {
+              _context.next = 5;
+              break;
+            }
+
+            res.status(400).json({
+              error: "sort is required"
+            });
+            return _context.abrupt("return");
+
+          case 5:
             _context.prev = 5;
             _context.next = 8;
             return regeneratorRuntime.awrap(getArticles(sort));
