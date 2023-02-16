@@ -8,31 +8,18 @@ import { RequestParams, Response } from './TypeDefinition/TypeDefinitions';
  * 
  * @param {RequestParams} req - The request parameters
  * 
- * @param {Response} res - The response object
- * 
  * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
  * 
  * @throws {Error} If the file cannot be read
  * @throws {Error} If search parameters are incorrect.
  */
-export default async function getArticles(req: RequestParams, res: Response) {
+export default async function getArticles(req: RequestParams) {
   console.log("<getArticles> Request: " + req.query )
-  const query = req.query.sort;
+  const date = "date";
+  console.log("<getArticles> ArticleParse: " + sortArticles(date).toString())
+  const query = req.query;
   const articles = await sortArticles(query);
-  if(query) {
-    try {
-      if (articles.length === 0) {
-        res.status(404).json({ message: 'Not Found' });
-      } else {
-        res.status(200).json(articles);
-      }
-    } catch (error) {
-      const err = new Error('ERROR <getArticles>: Cannot read file');
-      throw err;
-    }
-    } else {
-      res.status(200).json(articles);
-    }
+  return articles;
 }
 /**
  * #### Sorts the articles by the `query parameter`.
@@ -72,10 +59,8 @@ async function sortArticles(sortBy: string) {
 async function sortByDate() {
   const articles = await processMarkdown();
   try {
-    const sortedArticles = articles.sort((a: any, b: any) => {
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
-      return dateB.getTime() - dateA.getTime();
+    const sortedArticles = articles.forEach((article: any) => {
+      article.date = new Date(article.date);
     });
     return sortedArticles;
   } catch (error) {

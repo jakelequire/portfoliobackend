@@ -1,10 +1,16 @@
 ---
-title: "Test title 1"
-date: "2022-01-01"
-content: "Test content 1"
-tags: ["tag1", "tag2"]
-category: "Test category 1"
-image: "test.jpg"
-imageAlt: "test image alt 1"
+title: "Another Title"
+date: "3022-06-21"
+content: "What is this?"
+tags: ["Express", "Node"]
+category: "idk something"
+image: "whatsnineplusten.jpg"
+imageAlt: "twenty-one"
 ---
-Test body 2
+I am slowly losing my mind :)
+``` js
+function example() {
+    console.log("example!")
+}
+```
+

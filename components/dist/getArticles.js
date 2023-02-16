@@ -45,42 +45,25 @@ var _processMarkdown_1 = require("./_processMarkdown");
  *
  * @param {RequestParams} req - The request parameters
  *
- * @param {Response} res - The response object
- *
  * @return {Promise<Article[]>} Promise that resolves to an array of Article objects.
  *
  * @throws {Error} If the file cannot be read
  * @throws {Error} If search parameters are incorrect.
  */
-function getArticles(req, res) {
+function getArticles(req) {
     return __awaiter(this, void 0, void 0, function () {
-        var query, articles, err;
+        var date, query, articles;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     console.log("<getArticles> Request: " + req.query);
-                    query = req.query.sort;
+                    date = "date";
+                    console.log("<getArticles> ArticleParse: " + sortArticles(date).toString());
+                    query = req.query;
                     return [4 /*yield*/, sortArticles(query)];
                 case 1:
                     articles = _a.sent();
-                    if (query) {
-                        try {
-                            if (articles.length === 0) {
-                                res.status(404).json({ message: 'Not Found' });
-                            }
-                            else {
-                                res.status(200).json(articles);
-                            }
-                        }
-                        catch (error) {
-                            err = new Error('ERROR <getArticles>: Cannot read file');
-                            throw err;
-                        }
-                    }
-                    else {
-                        res.status(200).json(articles);
-                    }
-                    return [2 /*return*/];
+                    return [2 /*return*/, articles];
             }
         });
     });
@@ -146,10 +129,8 @@ function sortByDate() {
                 case 1:
                     articles = _a.sent();
                     try {
-                        sortedArticles = articles.sort(function (a, b) {
-                            var dateA = new Date(a.date);
-                            var dateB = new Date(b.date);
-                            return dateB.getTime() - dateA.getTime();
+                        sortedArticles = articles.forEach(function (article) {
+                            article.date = new Date(article.date);
                         });
                         return [2 /*return*/, sortedArticles];
                     }

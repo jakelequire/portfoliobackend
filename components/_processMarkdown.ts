@@ -15,6 +15,7 @@ const articleParse: Article[] = [];
  */
 export default async function processMarkdown() {
   await parseFiles();
+  // console.log("<processMarkdown> Fired")
   try {
     if (articleParse.length === 0) {
       return ["Not Found"];
@@ -43,6 +44,8 @@ export default async function processMarkdown() {
 async function importFiles() {
   let articleFiles: string[] = [];
   const files = await fs.readdir(articleDir);
+  // console.log("<importFiles> Fired")
+  console.log("<importFiles> Files: " + files)
   try {
     for (const file of files) {
       const fileData = await fs.readFile(`${articleDir}/${file}`, 'utf8');
@@ -65,10 +68,12 @@ async function importFiles() {
 async function parseFiles() {
   let parsedFiles: Article[] = [];
   const files = await importFiles();
+  // console.log("<parseFiles> Fired")
   try {
     for (const file of files) {
-      const regex = /---\n(.*\n)*?---\n(.|\n)*/;
+      const regex = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/;
       const match = file.match(regex);
+      console.log("<parseFiles> Match: " + match)
       if (!match) {
         continue;
       }
@@ -86,6 +91,7 @@ async function parseFiles() {
           [key.trim()]: [value.trim()],
         };
       }, {}); 
+      console.log("<parseFiles> Metadata: " + metadata)
       const content = file.replace(metadataString, '').trim();  
       parsedFiles.push({
         title: Array.isArray(metadata.title) ? metadata.title[0] : metadata.title,

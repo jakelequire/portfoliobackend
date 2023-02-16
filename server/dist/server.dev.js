@@ -27,48 +27,35 @@ app.prepare().then(function () {
     return handle(req, res);
   });
   server.get('/articles', function _callee(req, res) {
-    var method, query, sort, articles;
+    var query, articles;
     return regeneratorRuntime.async(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            method = req.method, query = req.query;
-            sort = query.sort;
+            query = req.query;
+            _context.prev = 1;
+            _context.next = 4;
+            return regeneratorRuntime.awrap(getArticles(query));
 
-            if (!(sort === undefined || sort === null)) {
-              _context.next = 5;
-              break;
-            }
-
-            res.status(400).json({
-              error: "sort is required"
-            });
-            return _context.abrupt("return");
-
-          case 5:
-            _context.prev = 5;
-            _context.next = 8;
-            return regeneratorRuntime.awrap(getArticles(sort));
-
-          case 8:
+          case 4:
             articles = _context.sent;
             res.status(200).json(articles);
-            _context.next = 15;
+            _context.next = 11;
             break;
 
-          case 12:
-            _context.prev = 12;
-            _context.t0 = _context["catch"](5);
+          case 8:
+            _context.prev = 8;
+            _context.t0 = _context["catch"](1);
             res.status(500).json({
               error: _context.t0
             }) && console.log("ERROR !</articles>: error" + _context.t0);
 
-          case 15:
+          case 11:
           case "end":
             return _context.stop();
         }
       }
-    }, null, null, [[5, 12]]);
+    }, null, null, [[1, 8]]);
   });
   server.listen(PORT, function (err) {
     if (err) throw err;

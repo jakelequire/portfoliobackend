@@ -17,7 +17,5 @@ export type Response = ExpressResponse & {
     json: (data: Article[]) => void;
   }
 export type RequestParams = {
-    query: {
-        sort: string;
-    }
+    query: string
 }

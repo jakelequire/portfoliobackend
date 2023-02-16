@@ -1,10 +1,15 @@
 ---
-title: "Test title 1"
-date: "2022-01-01"
-content: "Test content 1"
-tags: ["tag1", "tag2"]
-category: "Test category 1"
-image: "test.jpg"
-imageAlt: "test image alt 1"
+title: "Example ONE"
+date: "1995-10-6"
+content: "Content??"
+tags: ["React", "Next"]
+category: "Web Development"
+image: "meme.jpg"
+imageAlt: "Meme"
 ---
-Test body 1
+SOME EXAMPLE CONTENT
+``` js
+function example() {
+    console.log("example")
+}
+```

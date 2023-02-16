@@ -75,6 +75,7 @@ function processMarkdown() {
                 case 0: return [4 /*yield*/, parseFiles()];
                 case 1:
                     _a.sent();
+                    // console.log("<processMarkdown> Fired")
                     try {
                         if (articleParse.length === 0) {
                             return [2 /*return*/, ["Not Found"]];
@@ -116,6 +117,8 @@ function importFiles() {
                     return [4 /*yield*/, fs_1.promises.readdir(articleDir)];
                 case 1:
                     files = _a.sent();
+                    // console.log("<importFiles> Fired")
+                    console.log("<importFiles> Files: " + files);
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 7, , 8]);
@@ -162,11 +165,13 @@ function parseFiles() {
                     return [4 /*yield*/, importFiles()];
                 case 1:
                     files = _a.sent();
+                    // console.log("<parseFiles> Fired")
                     try {
                         for (_i = 0, files_2 = files; _i < files_2.length; _i++) {
                             file = files_2[_i];
-                            regex = /---\n(.*\n)*?---\n(.|\n)*/;
+                            regex = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/;
                             match = file.match(regex);
+                            console.log("<parseFiles> Match: " + match);
                             if (!match) {
                                 continue;
                             }
@@ -179,6 +184,7 @@ function parseFiles() {
                                 }
                                 return __assign(__assign({}, acc), (_b = {}, _b[key.trim()] = [value.trim()], _b));
                             }, {});
+                            console.log("<parseFiles> Metadata: " + metadata);
                             content = file.replace(metadataString, '').trim();
                             parsedFiles.push({
                                 title: Array.isArray(metadata.title) ? metadata.title[0] : metadata.title,
