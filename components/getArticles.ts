@@ -65,7 +65,6 @@ async function sortByDate() {
   });
   return articles;
 }
-
 /**
  * #### Sorts the articles `alphabetically`.
  * 
