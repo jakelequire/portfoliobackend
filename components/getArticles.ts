@@ -14,6 +14,7 @@ import { Article, RequestParams } from './TypeDefinition/TypeDefinitions';
  * @throws {Error} If search parameters are incorrect.
  */
 export default async function getArticles(req: RequestParams) {
+  console.log("-- New Request --")
   console.log("<getArticles> Request: " + req.query )
   const date = "date";
   console.log("<getArticles> ArticleParse: " + sortArticles(date).toString())
