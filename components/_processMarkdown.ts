@@ -50,6 +50,7 @@ export default async function processMarkdown(): Promise<Article[]> {
       category: Array.isArray(metadata.category) ? metadata.category[0] : metadata.category,
       image: Array.isArray(metadata.image) ? metadata.image[0] : metadata.image,
       imageAlt: Array.isArray(metadata.imageAlt) ? metadata.imageAlt[0] : metadata.imageAlt,
+      id: Array.isArray(metadata.id) ? metadata.id[0] : metadata.id,
     };
   }));
 

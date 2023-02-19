@@ -56,7 +56,7 @@ function getArticles(req) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log("-- New Request --");
+                    console.log(" !!!! -- New Request -- !!!! ");
                     console.log("<getArticles> Request: " + req.query);
                     date = "date";
                     console.log("<getArticles> ArticleParse: " + sortArticles(date).toString());
@@ -64,6 +64,7 @@ function getArticles(req) {
                     return [4 /*yield*/, sortArticles(query)];
                 case 1:
                     articles = _a.sent();
+                    console.log(" **** -- Request Complete -- **** ");
                     return [2 /*return*/, articles];
             }
         });
