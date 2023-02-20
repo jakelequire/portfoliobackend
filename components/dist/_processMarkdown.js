@@ -110,6 +110,7 @@ function processMarkdown() {
                     parsedFiles = _a.sent();
                     validFiles = parsedFiles.filter(function (file) { return file !== null; });
                     articleParse.push.apply(articleParse, validFiles);
+                    console.log("!! <processMarkdown>:  " + articleParse.forEach(function (article) { return console.log(article.content); }));
                     return [2 /*return*/, validFiles];
             }
         });

@@ -56,7 +56,7 @@ export default async function processMarkdown(): Promise<Article[]> {
 
   const validFiles = parsedFiles.filter((file) => file !== null) as Article[];
   articleParse.push(...validFiles);
-
+  console.log("!! <processMarkdown>:  " + articleParse.forEach((article) => console.log(article.content)))
   return validFiles;
 }
 /**
