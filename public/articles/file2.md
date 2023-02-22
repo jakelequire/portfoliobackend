@@ -1,31 +1,82 @@
 ---
 id: "A00002"
-title: "Article #2"
-date: "05/23/2022"
-tags: ["React", "Axios"]
-category: "Web Design"
-image: "React.jpg"
-imageAlt: "React Alt"
+title: "How to Make a Custom React Component"
+date: "02/21/2023"
+tags: ["React", "Next"]
+category: "React"
+image: "Example.jpg"
+imageAlt: "Example Alt"
 ---
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-``` js
-function example() {
-    console.log("example!")
-}
-```
-Some more example content
-## Some code example
-``` js
-export default async function importArticles() {
-    const response = await axios.get("http://localhost:3001/articles?query=alphabetically");
-    const articles = response.data;
+## How to Make a Custom React Component
+React is a popular JavaScript library used for building user interfaces. It's known for its efficiency and the way it handles component-based architecture. React components are the building blocks of a React application, and there are two types of components: functional and class components.
 
-    const articleObject = articles.map((article) => {
-        const { id, title, date, tags, category, image, imageAlt, content } = article;
-        return new createArticle( id, title, date, tags, category, image, imageAlt, content);
-    })
-    return articleObject;
+In this article, we will be focusing on how to create a custom class component in React. We'll explain what a class component is and how to create one from scratch, step by step.
+
+### What is a Class Component?
+In React, a class component is a JavaScript class that extends the React.Component class. This class represents a component that can have state and lifecycle methods, and can render JSX elements to the screen.
+
+Let's take a look at a basic example of a class component:
+
+``` jsx
+import React from 'react';
+
+class MyComponent extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>Hello World</h1>
+      </div>
+    );
+  }
 }
 ```
-## What is this code doing?
-This code is doing a lot of things. First, it is using the axios library to make a `GET` request to the server. The server is running on `port 3001` and the endpoint is `/articles`. The query parameter is set to alphabetically. This will return the articles in alphabetical order. The response is then stored in the variable response. The data from the response is then stored in the variable articles. The articles are then mapped over and a new article object is created for each article. The article object is then stored in the variable articleObject. The articleObject is then returned.
+Here, we're importing the React module and extending the React.Component class to create a new component called MyComponent. This component only has a render method, which returns a simple JSX element.
+
+Creating a Custom Class Component
+Now that we know what a class component is, let's create a custom one. We'll use the create-next-app@latest tool to set up our project.
+
+First, we'll create a new React app by running the following command in our terminal:
+
+``` bash
+npx create-next-app@latest my-app
+```
+This will create a new Next app in a directory called my-app that uses React.
+
+Next, we'll create a new folder called `components` inside the root directory of our project. Inside this folder, we'll create a new file called `MyComponent.js`. This file will contain our custom class component with the following code:
+``` jsx
+import React from 'react';
+
+export default class MyComponent extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>Hello World</h1>
+      </div>
+    );
+  }
+}
+```
+Here, we're defining a new class component called `MyComponent` that extends the `React.Component` class. We've added a `render` method that returns a simple JSX element with an h1 heading.
+
+Finally, we need to import and use this component in our `index.js` file. Open up `index.js` and replace the existing code with the following:
+
+``` jsx
+import React from 'react';
+import MyComponent from './MyComponent';
+
+export default function App() {
+  return (
+    <div className="App">
+      <MyComponent />
+    </div>
+  );
+}
+```
+Here, we're importing our `MyComponent` component and rendering it inside the `App` function.
+
+If you run the `npm start` command in your terminal to start your React app, you should see the "Hello World" message displayed in your browser.
+
+### Conclusion
+In this article, we've learned what a class component is in React and how to create one from scratch. We've walked through an example of creating a custom class component and using it in a React app.
+
+Creating custom components is an essential skill for any React developer, and understanding the fundamentals of class components is an important first step in that process.
