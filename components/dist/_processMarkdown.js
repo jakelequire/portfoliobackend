@@ -97,6 +97,7 @@ function processMarkdown() {
                                 return [2 /*return*/, {
                                         id: Array.isArray(metadata.id) ? metadata.id[0] : metadata.id,
                                         title: Array.isArray(metadata.title) ? metadata.title[0] : metadata.title,
+                                        description: Array.isArray(metadata.description) ? metadata.description[0] : metadata.description,
                                         date: Array.isArray(metadata.date) ? metadata.date[0] : metadata.date,
                                         tags: Array.isArray(metadata.tags) ? metadata.tags.flat() : [metadata.tags],
                                         category: Array.isArray(metadata.category) ? metadata.category[0] : metadata.category,

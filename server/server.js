@@ -25,7 +25,6 @@ app.prepare().then(() => {
  
   server.get('/articles', async (req, res) => {
     const { query } = req;
-    
     try {
       const articles = await getArticles(query);
       res.status(200).json(articles);

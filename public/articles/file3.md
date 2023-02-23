@@ -1,6 +1,7 @@
 ---
 id: "A00003"
 title: "How to Make a Custom React Component"
+description: "An example of how to create a custom React Class Component."
 date: "02/21/2023"
 tags: ["React", "Next"]
 category: "React"
