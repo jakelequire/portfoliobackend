@@ -10,7 +10,11 @@ const handle = app.getRequestHandler();
 const PORT = 3001;
 
 const corsOptions = {
-  origin: ["http://localhost:3000/testdev", "http://localhost:3000"],
+  origin: [
+    "http://localhost:3000/testdev", 
+    "http://localhost:3000",
+    "https://jakelequire.dev",
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
