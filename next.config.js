@@ -4,7 +4,6 @@ const nextConfig = {
 }
 
 module.exports = nextConfig;
-
 /* 
 serverRuntimeConfig: {
   basePath: './server/server.js'
