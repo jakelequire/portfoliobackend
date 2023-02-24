@@ -3,4 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
 }
 
-module.exports = nextConfig
+module.exports = {
+  serverRuntimeConfig: {
+    basePath: './server/server.js'
+  }
+}
