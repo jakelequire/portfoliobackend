@@ -14,6 +14,8 @@ const corsOptions = {
     "http://localhost:3000/testdev", 
     "http://localhost:3000",
     "https://jakelequire.dev",
+    "https://portfolio-jakelequire.vercel.app",
+    "https://portfolio-git-main-jakelequire.vercel.app",
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
