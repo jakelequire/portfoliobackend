@@ -47,3 +47,4 @@ Root:
     package.json
     tsconfig.json
     tsconfig.server.json
+    vercel.json
