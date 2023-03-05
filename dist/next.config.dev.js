@@ -6,6 +6,6 @@ var nextConfig = {
 };
 module.exports = {
   serverRuntimeConfig: {
-    basePath: './server/server.js'
+    basePath: './server.js'
   }
 };

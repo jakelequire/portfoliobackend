@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon ./server/server.js",
-    "build": "node ./server/server.js",
-    "start": "node start ./server/server.js",
+    "dev": "nodemon ./server.js",
+    "build": "node ./server.js",
+    "start": "node start ./server.js",
     "lint": "next lint",
     "test": "jest"
   },
