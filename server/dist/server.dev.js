@@ -13,7 +13,7 @@ var app = next({
   dev: dev
 });
 var handle = app.getRequestHandler();
-var PORT = 3001;
+var PORT = process.env.PORT || 3001;
 var corsOptions = {
   origin: ["http://localhost:3000/testdev", "http://localhost:3000", "https://jakelequire.dev"],
   credentials: true,
