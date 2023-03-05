@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "nodemon ./server/server.js",
-    "build": "next ",
-    "start": "nodemon ./server/server.js",
+    "build": "node ./server/server.js",
+    "start": "node start ./server/server.js",
     "lint": "next lint",
     "test": "jest"
   },

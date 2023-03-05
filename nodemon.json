@@ -5,6 +5,6 @@
         "components",
         ".next"
     ],
-    "watch": ["server/**/*", "server.ts"],
+    "watch": ["server/**/*", "server.js"],
     "ext": "ts js json"
 }
