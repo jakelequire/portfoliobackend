@@ -52,21 +52,14 @@ var _processMarkdown_1 = require("./_processMarkdown");
  */
 function getArticles(req) {
     return __awaiter(this, void 0, void 0, function () {
-        var date, query, articles;
+        var query, articles;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log(" !!!! -- New Request -- !!!! ");
-                    console.log("<getArticles>      Request: " + req.query);
-                    date = "date";
-                    console.log("<getArticles> ArticleParse: " + sortArticles(date).toString());
                     query = req.query;
                     return [4 /*yield*/, sortArticles(query)];
                 case 1:
                     articles = _a.sent();
-                    console.log(" **** -- Request Complete -- **** ");
-                    console.log(" ");
-                    console.log("_________________________________________________________");
                     return [2 /*return*/, articles];
             }
         });
