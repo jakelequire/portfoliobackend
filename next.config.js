@@ -1,12 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  experimental: {
+    appDir: true,
+  }
 }
-
-// module.exports = {
-//   serverRuntimeConfig: {
-//     basePath: './*'
-//   }
-// }
 
 module.exports = nextConfig

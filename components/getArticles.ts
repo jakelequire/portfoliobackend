@@ -1,5 +1,5 @@
-import processMarkdown from './_processMarkdown';
-import { Article, RequestParams } from './TypeDefinition/TypeDefinitions';
+import processMarkdown from './processMarkdown';
+import { Article, RequestParams } from './TypeDefinitions';
 /**
  * #### Parses markdown files from a directory and outputs an `array of objects`.
  * Each object represents an article, containing metadata such as the title, date, tags, and image,
@@ -14,9 +14,14 @@ import { Article, RequestParams } from './TypeDefinition/TypeDefinitions';
  * @throws {Error} If search parameters are incorrect.
  */
 export default async function getArticles(req: RequestParams) {
-  const query = req.query;
+  const query = req
+  console.log("<getArticles>: ", query)
+  if(query === undefined || query === null) {
+    const articles = await sortByDate();
+    return articles;
+  }
   const articles = await sortArticles(query);
-  return articles;
+  return articles
 }
 /**
  * #### Sorts the articles by the `query parameter`.
@@ -27,7 +32,7 @@ export default async function getArticles(req: RequestParams) {
  * 
  * @throws {Error} If search parameters are incorrect.
  */
-async function sortArticles(sortBy: string) { 
+async function sortArticles(sortBy: any) { 
   try {
     switch (sortBy) {
       case 'date':

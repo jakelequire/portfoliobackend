@@ -1,8 +1,7 @@
 import { promises as fs } from 'fs';
-import { join } from 'path';
-import { Article } from './TypeDefinition/TypeDefinitions';
+import { Article } from './TypeDefinitions';
 
-const articleDir = join(__dirname, '..', '../public/articles');
+const articleDir = "./public/articles"
 const articleParse: Article[] = [];
 
 /**
