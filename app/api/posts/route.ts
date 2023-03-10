@@ -28,7 +28,7 @@ function middleware(req: NextApiRequest, res: NextApiResponse, fn: Function) {
 export async function GET(req: NextApiRequest, res: NextApiResponse) {
   console.log("<handler>")
   console.log("<handler> - Method: ", req.method)
-  await middleware(req, res, cors)
+  // await middleware(req, res, cors)
   if (req.method === "GET") {
     try {
       const queryParams = new URLSearchParams(req.url);
@@ -37,7 +37,7 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
 
       console.log(typeof res, "<- RESPONSE");
 
-      return res.json(articles);
+      return NextResponse.json(articles);
     } catch (error) {
       throw new Error(error as string)
     }
