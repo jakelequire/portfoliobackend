@@ -21,3 +21,16 @@ export type Response = Request & {
 export type RequestParams = {
     query?: string
 }
+
+export type ResponseParam = {
+    statusCode: number;
+    setHeader (key: string, value: string): any;
+    end (data: string): any;
+} 
+
+export type ServerResponse<T> = {
+    status: (code: number) => ResponseParam;
+    json: (data: T) => void;
+    setHeader: (key: string, value: string) => void;
+    end: (data: string) => void;
+}

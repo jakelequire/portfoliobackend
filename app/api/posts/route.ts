@@ -1,34 +1,15 @@
 import type { RequestParams } from '../../../components/TypeDefinitions';
 import type { NextApiRequest, NextApiResponse } from "next";
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server';
 import getArticles from "@/components/getArticles";
-import Cors from 'cors'
 
-const cors = Cors({
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  origin: '*',
-  allowedHeaders: ['Content-Type', 'application/json'],
-})
 
-function middleware(req: NextApiRequest, res: NextApiResponse, fn: Function) {
-  console.log("middleware called with req", req);
-  console.log("middleware called with res", res);
-  console.log("middleware called with fn", fn);
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result: any) => {
-      if (result instanceof Error) {
-        return reject(result)
-      }
-
-      return resolve(result)
-    })
-  })
-}
-
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
-  console.log("<handler>")
+ 
+export async function GET(req: NextRequest, res: NextApiResponse) {
+  console.warn("<handler GET>")
   console.log("<handler> - Method: ", req.method)
-  // await middleware(req, res, cors)
+  console.log("<handler> - Headers: ", req.mode)
+  console.log("<Continued>")
   if (req.method === "GET") {
     try {
       const queryParams = new URLSearchParams(req.url);
@@ -36,10 +17,43 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
       const articles = await getArticles(query as RequestParams);
 
       console.log(typeof res, "<- RESPONSE");
-
       return NextResponse.json(articles);
     } catch (error) {
       throw new Error(error as string)
-    }
+    } 
   }
 }
+
+
+
+
+
+// import cors from 'cors';
+//
+// const Cors = cors({
+//   methods: ['GET', 'HEAD'],
+//   origin: '*',
+//   optionsSuccessStatus: 200,
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+// });
+// 
+// async function corsMiddleware(req: NextApiRequest, res: NextApiResponse, fn: Function) {
+//   console.log("<CORS> - Middleware Fired -")
+//   console.log("<CORS> - Header", req.headers)
+//   return new Promise<void>((resolve, reject) => {
+//     console.log("<CORS> - New Promise Fired -")
+//     if (req.method === 'OPTIONS') {
+//       console.log("<CORS> - Options Request -")
+//       return resolve();
+//     }
+//     fn(req, res, (err: any) => {
+//     // ^ This Line is the Problem
+//       if (err) {
+//         console.log("<CORS> Rejected Cors: ", err)
+//         return reject(err)
+//       }
+//       console.log("<CORS> Resolved Cors")
+//       return resolve()
+//     });
+//   });
+// }
