@@ -39,62 +39,72 @@ exports.__esModule = true;
 exports.GET = void 0;
 var server_1 = require("next/server");
 var getArticles_1 = require("@/components/getArticles");
+var next_url_1 = require("next/dist/server/web/next-url");
+var cors_1 = require("cors");
+var corsConfig = cors_1["default"]({
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 200,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    preflightContinue: false
+});
+function corsMiddleware(req, res, fn) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            return [2 /*return*/, new Promise(function (resolve, reject) {
+                    if (req.method === 'OPTIONS') {
+                        console.log("<CORS> - Options Request -");
+                        return resolve();
+                    }
+                    fn(req, res, function (err) {
+                        // ^ This Line is the Problem
+                        if (err) {
+                            console.log("<CORS> Rejected Cors: ", err);
+                            return reject(err);
+                        }
+                        console.log("<CORS> Resolved Cors");
+                        return resolve();
+                    });
+                })];
+        });
+    });
+}
 function GET(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var queryParams, query, articles, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.warn("<handler GET>");
-                    console.log("<handler> - Method: ", req.method);
-                    console.log("<handler> - Headers: ", req.mode);
-                    console.log("<Continued>");
-                    if (!(req.method === "GET")) return [3 /*break*/, 4];
-                    _a.label = 1;
+                    console.log("_________________________________________________________");
+                    console.log(" -------------------  NEW REQUEST   -------------------- ");
+                    console.log("_________________________________________________________");
+                    console.log("<handler GET>");
+                    if (!res.headers) return [3 /*break*/, 2];
+                    return [4 /*yield*/, corsMiddleware(req, res, corsConfig)];
                 case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    queryParams = new URLSearchParams(req.url);
-                    query = queryParams.values().next().value;
-                    return [4 /*yield*/, getArticles_1["default"](query)];
+                    _a.sent();
+                    console.log("Middleware Fired");
+                    _a.label = 2;
                 case 2:
+                    console.log("<Continued>");
+                    if (!(req.method === "GET")) return [3 /*break*/, 6];
+                    _a.label = 3;
+                case 3:
+                    _a.trys.push([3, 5, , 6]);
+                    queryParams = new next_url_1.NextURL(req.url);
+                    query = queryParams.searchParams.get('query');
+                    return [4 /*yield*/, getArticles_1["default"](query)];
+                case 4:
                     articles = _a.sent();
                     console.log(typeof res, "<- RESPONSE");
                     return [2 /*return*/, server_1.NextResponse.json(articles)];
-                case 3:
+                case 5:
                     error_1 = _a.sent();
                     throw new Error(error_1);
-                case 4: return [2 /*return*/];
+                case 6: return [2 /*return*/];
             }
         });
     });
 }
 exports.GET = GET;
-// import cors from 'cors';
-//
-// const Cors = cors({
-//   methods: ['GET', 'HEAD'],
-//   origin: '*',
-//   optionsSuccessStatus: 200,
-//   allowedHeaders: ['Content-Type', 'Authorization'],
-// });
-// 
-// async function corsMiddleware(req: NextApiRequest, res: NextApiResponse, fn: Function) {
-//   console.log("<CORS> - Middleware Fired -")
-//   console.log("<CORS> - Header", req.headers)
-//   return new Promise<void>((resolve, reject) => {
-//     console.log("<CORS> - New Promise Fired -")
-//     if (req.method === 'OPTIONS') {
-//       console.log("<CORS> - Options Request -")
-//       return resolve();
-//     }
-//     fn(req, res, (err: any) => {
-//     // ^ This Line is the Problem
-//       if (err) {
-//         console.log("<CORS> Rejected Cors: ", err)
-//         return reject(err)
-//       }
-//       console.log("<CORS> Resolved Cors")
-//       return resolve()
-//     });
-//   });
-// }
