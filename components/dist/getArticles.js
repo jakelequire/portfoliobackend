@@ -58,7 +58,7 @@ function getArticles(req) {
                 case 0:
                     sortby = req.sortby;
                     console.log("<getArticles>: ", sortby);
-                    if (!!sortby) return [3 /*break*/, 2];
+                    if (!(!sortby || sortby === undefined || null)) return [3 /*break*/, 2];
                     return [4 /*yield*/, sortByDate()];
                 case 1: return [2 /*return*/, _a.sent()];
                 case 2: return [4 /*yield*/, sortArticles(sortby)];

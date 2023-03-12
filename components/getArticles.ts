@@ -17,7 +17,7 @@ export default async function getArticles(req: RequestParams) {
   const { sortby } = req
   console.log("<getArticles>: ", sortby)
 
-  if(!sortby) {
+  if(!sortby || sortby === undefined || null) {
     return await sortByDate();
   }
   return await sortArticles(sortby);

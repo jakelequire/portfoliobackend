@@ -1,4 +1,3 @@
-import type { RequestParams } from "../../components/TypeDefinitions";
 import { NextApiRequest, NextApiResponse } from "next";
 import getArticles from "@/components/getArticles";
 import NextCors from "nextjs-cors";
