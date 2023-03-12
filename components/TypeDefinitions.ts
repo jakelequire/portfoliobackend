@@ -1,3 +1,5 @@
+import type { NextRequest } from 'next/server';
+
 export type Article = {
     id: string;
     title: string;
@@ -19,7 +21,11 @@ export type Response = Request & {
 }
 
 export type RequestParams = {
-    query?: string
+    query?: string;
+    method?: string;
+    headers?: Headers;
+    body?: string;
+    params?: string;
 }
 
 export type ResponseParam = {
@@ -27,10 +33,3 @@ export type ResponseParam = {
     setHeader (key: string, value: string): any;
     end (data: string): any;
 } 
-
-export type ServerResponse<T> = {
-    status: (code: number) => ResponseParam;
-    json: (data: T) => void;
-    setHeader: (key: string, value: string) => void;
-    end: (data: string) => void;
-}

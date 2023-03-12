@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.OPTIONS = exports.GET = void 0;
+exports.handler = void 0;
 var getArticles_1 = require("@/components/getArticles");
 var cors_1 = require("cors");
 var cors = cors_1["default"]({
@@ -53,7 +53,10 @@ function runMiddleware(req, res, fn) {
         });
     });
 }
-function GET(req, res) {
+function getCorsMiddleware() {
+    return cors;
+}
+function handler(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var query, articles, error_1;
         return __generator(this, function (_a) {
@@ -64,7 +67,13 @@ function GET(req, res) {
                     /**/ console.log("_________________________________________________________");
                     /**/ console.log("<handler GET>");
                     /**/ console.log("<!!", req.method, "!!>");
-                    res.setHeader('Access-Control-Allow-Origin', '*');
+                    if (req.method === 'OPTIONS') {
+                        res.status(200).end();
+                        return [2 /*return*/];
+                    }
+                    // await runMiddleware(req, res, getCorsMiddleware)
+                    /**/ console.log("<Continued>");
+                    if (!(req.method === "GET")) return [3 /*break*/, 4];
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
@@ -84,19 +93,4 @@ function GET(req, res) {
         });
     });
 }
-exports.GET = GET;
-function OPTIONS(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    /**/ console.log("!!<OPTIONS REQUEST>!!");
-                    return [4 /*yield*/, runMiddleware(req, res, cors)];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-exports.OPTIONS = OPTIONS;
+exports.handler = handler;
