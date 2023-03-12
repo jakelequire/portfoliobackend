@@ -7,7 +7,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   console.log("-------------------  NEW REQUEST   --------------------");
   console.log("<handler GET>");
   console.log("<!!", req.method, "!!>");
-
+  console.log("_______________________________________________________");
+  
   await NextCors(req, res, {
     methods: ["GET", "HEAD", "POST", "OPTIONS"],
     origin: "*",

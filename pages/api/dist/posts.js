@@ -47,6 +47,7 @@ function handler(req, res) {
                     console.log("-------------------  NEW REQUEST   --------------------");
                     console.log("<handler GET>");
                     console.log("<!!", req.method, "!!>");
+                    console.log("_______________________________________________________");
                     return [4 /*yield*/, nextjs_cors_1["default"](req, res, {
                             methods: ["GET", "HEAD", "POST", "OPTIONS"],
                             origin: "*",
