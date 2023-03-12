@@ -40,14 +40,13 @@ var getArticles_1 = require("@/components/getArticles");
 var nextjs_cors_1 = require("nextjs-cors");
 function handler(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var query, articles, error_1;
+        var sortby, articles, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     console.log("-------------------  NEW REQUEST   --------------------");
-                    console.log("<handler GET>");
-                    console.log("<!!", req.method, "!!>");
-                    console.log("_______________________________________________________");
+                    console.log("</posts Handler>");
+                    console.log("<!!--", req.method, "--!!>");
                     return [4 /*yield*/, nextjs_cors_1["default"](req, res, {
                             methods: ["GET", "HEAD", "POST", "OPTIONS"],
                             origin: "*",
@@ -59,10 +58,12 @@ function handler(req, res) {
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 4, , 5]);
-                    query = req.query;
-                    return [4 /*yield*/, getArticles_1["default"](query)];
+                    sortby = req.query.sortby;
+                    console.log("<GET> sortby: ", sortby);
+                    return [4 /*yield*/, getArticles_1["default"]({ sortby: sortby })];
                 case 3:
                     articles = _a.sent();
+                    console.log("<GET> articles: ", typeof articles);
                     res.json(articles);
                     return [3 /*break*/, 5];
                 case 4:
@@ -70,7 +71,9 @@ function handler(req, res) {
                     console.error("GET Error:", error_1);
                     res.status(500).send({ error: error_1.message });
                     return [3 /*break*/, 5];
-                case 5: return [2 /*return*/];
+                case 5:
+                    console.log("_______________________________________________________");
+                    return [2 /*return*/];
             }
         });
     });

@@ -21,6 +21,7 @@ export type Response = Request & {
 }
 
 export type RequestParams = {
+    sortby?: string | string[];
     query?: string;
     method?: string;
     headers?: Headers;

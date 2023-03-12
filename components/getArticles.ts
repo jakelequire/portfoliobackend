@@ -14,14 +14,13 @@ import { Article, RequestParams } from './TypeDefinitions';
  * @throws {Error} If search parameters are incorrect.
  */
 export default async function getArticles(req: RequestParams) {
-  const query = req
-  console.log("<getArticles>: ", query)
-  if(query === undefined || query === null) {
-    const articles = await sortByDate();
-    return articles;
+  const { sortby } = req
+  console.log("<getArticles>: ", sortby)
+
+  if(!sortby) {
+    return await sortByDate();
   }
-  const articles = await sortArticles(query);
-  return articles
+  return await sortArticles(sortby);
 }
 /**
  * #### Sorts the articles by the `query parameter`.
