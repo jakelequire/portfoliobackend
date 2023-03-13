@@ -59,11 +59,10 @@ function handler(req, res) {
                 case 2:
                     _a.trys.push([2, 4, , 5]);
                     sortby = req.query.sortby;
-                    console.log("<GET> sortby: ", sortby);
+                    /**/ console.log("<GET> sortby: ", sortby);
                     return [4 /*yield*/, getArticles_1["default"]({ sortby: sortby })];
                 case 3:
                     articles = _a.sent();
-                    console.log("<GET> articles: ", typeof articles);
                     res.json(articles);
                     return [3 /*break*/, 5];
                 case 4:

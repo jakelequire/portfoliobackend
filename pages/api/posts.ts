@@ -16,9 +16,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === "GET") {
     try {
       const { sortby } = req.query;
-      console.log("<GET> sortby: ", sortby);
+      /**/console.log("<GET> sortby: ", sortby);
       const articles = await getArticles({ sortby });
-      console.log("<GET> articles: ", typeof articles);
       res.json(articles);
     } catch (error: unknown | any) {
       console.error("GET Error:", error);

@@ -1,5 +1,3 @@
-import type { NextRequest } from 'next/server';
-
 export type Article = {
     id: string;
     title: string;
